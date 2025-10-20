@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  # Attack Flow Builder Frontend
+  attackflow_builder:
+    build:
+      context: ./attack_flow_builder
+      dockerfile: Dockerfile
+    container_name: attackflow_builder
+    ports:
+      - "8080:8080"
+    networks:
+      - attackflow_network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+
+  # Sanic Web Server Backend
+  sanic_web_server:
+    build:
+      context: ./sanic_web_server
+      dockerfile: Dockerfile
+    container_name: sanic_web_server
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=${DEBUG:-false}
+      - STORAGE_PATH=/app/alerts
+      - STIX_STORAGE_PATH=/app/stix_bundles
+    volumes:
+      - ./docs:/app/docs:ro
+      - backend_alerts:/app/alerts
+      - backend_stix:/app/stix_bundles
+    networks:
+      - attackflow_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+
+  # STIX Modeler UI
+  stix_modeler:
+    build:
+      context: ./UI
+      dockerfile: Dockerfile
+    container_name: stix_modeler
+    ports:
+      - "3000:3000"
+    networks:
+      - attackflow_network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+
+volumes:
+  backend_alerts:
+    driver: local
+  backend_stix:
+    driver: local
+
+networks:
+  attackflow_network:
+    driver: bridge

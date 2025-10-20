@@ -1,0 +1,229 @@
+{
+  "type": "bundle",
+  "id": "bundle--a4b5383f-0d40-4914-a436-f0b41dbdff68",
+  "spec_version": "2.1",
+  "created": "2025-07-25T15:18:34.335Z",
+  "modified": "2025-07-25T15:18:34.335Z",
+  "objects": [
+    {
+      "type": "extension-definition",
+      "id": "extension-definition--fb9c968a-745b-4ade-9b25-c324172197f4",
+      "spec_version": "2.1",
+      "created": "2022-08-02T19:34:35.143Z",
+      "modified": "2022-08-02T19:34:35.143Z",
+      "name": "Attack Flow",
+      "description": "Extends STIX 2.1 with features to create Attack Flows.",
+      "created_by_ref": "identity--fb9c968a-745b-4ade-9b25-c324172197f4",
+      "schema": "https://center-for-threat-informed-defense.github.io/attack-flow/stix/attack-flow-schema-2.0.0.json",
+      "version": "2.0.0",
+      "extension_types": [
+        "new-sdo"
+      ],
+      "external_references": [
+        {
+          "source_name": "Documentation",
+          "description": "Documentation for Attack Flow",
+          "url": "https://center-for-threat-informed-defense.github.io/attack-flow"
+        },
+        {
+          "source_name": "GitHub",
+          "description": "Source code repository for Attack Flow",
+          "url": "https://github.com/center-for-threat-informed-defense/attack-flow"
+        }
+      ]
+    },
+    {
+      "type": "identity",
+      "id": "identity--fb9c968a-745b-4ade-9b25-c324172197f4",
+      "spec_version": "2.1",
+      "created": "2022-08-02T19:34:35.143Z",
+      "modified": "2022-08-02T19:34:35.143Z",
+      "created_by_ref": "identity--fb9c968a-745b-4ade-9b25-c324172197f4",
+      "name": "MITRE Engenuity Center for Threat-Informed Defense",
+      "identity_class": "organization"
+    },
+    {
+      "type": "attack-flow",
+      "id": "attack-flow--d0f1d8ab-37df-430d-9de5-0af47050de34",
+      "spec_version": "2.1",
+      "created": "2025-03-05T08:45:38.645Z",
+      "modified": "2025-07-25T15:18:34.336Z",
+      "extensions": {
+        "extension-definition--fb9c968a-745b-4ade-9b25-c324172197f4": {
+          "extension_type": "new-sdo"
+        }
+      },
+      "created_by_ref": "identity--e6c57bbd-024b-4ed8-86fb-2036fd775e62",
+      "start_refs": [
+        "attack-action--1a463f80-ddbd-41b9-a873-2e12f2747de3"
+      ],
+      "name": "Fourth",
+      "description": "Kerberoasting. Difficult attack to detect",
+      "scope": "incident"
+    },
+    {
+      "type": "identity",
+      "id": "identity--e6c57bbd-024b-4ed8-86fb-2036fd775e62",
+      "spec_version": "2.1",
+      "created": "2025-07-25T15:18:34.335Z",
+      "modified": "2025-07-25T15:18:34.335Z",
+      "name": "Jacopo"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--1a463f80-ddbd-41b9-a873-2e12f2747de3",
+      "spec_version": "2.1",
+      "created": "2025-07-25T15:18:34.336Z",
+      "modified": "2025-07-25T15:18:34.336Z",
+      "extensions": {
+        "extension-definition--fb9c968a-745b-4ade-9b25-c324172197f4": {
+          "extension_type": "new-sdo"
+        }
+      },
+      "name": "Credentials Access - Kerberoasting",
+      "tactic_id": "TA0006",
+      "tactic_ref": "x-mitre-tactic--2558fd61-8c75-4730-94c4-11926db2a263",
+      "technique_id": "T1558.003",
+      "technique_ref": "attack-pattern--f2877f7f-9a4c-4251-879f-1224e3006bee",
+      "effect_refs": [
+        "attack-condition--69a700e9-e6a1-40c9-9307-337687372588"
+      ]
+    },
+    {
+      "type": "attack-asset",
+      "id": "attack-asset--8ac06033-83c0-408f-8ad5-92932cf1a35a",
+      "spec_version": "2.1",
+      "created": "2025-07-25T15:18:34.336Z",
+      "modified": "2025-07-25T15:18:34.336Z",
+      "extensions": {
+        "extension-definition--fb9c968a-745b-4ade-9b25-c324172197f4": {
+          "extension_type": "new-sdo"
+        }
+      },
+      "name": "Yomi machinery (a Windows VM)",
+      "object_ref": "attack-action--1a463f80-ddbd-41b9-a873-2e12f2747de3"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--d05ccfb7-0bcc-4827-8ded-16adf339c95a",
+      "spec_version": "2.1",
+      "created": "2025-07-25T15:18:34.336Z",
+      "modified": "2025-07-25T15:18:34.336Z",
+      "extensions": {
+        "extension-definition--fb9c968a-745b-4ade-9b25-c324172197f4": {
+          "extension_type": "new-sdo"
+        }
+      },
+      "name": "Exfiltration Over Asymmetric Encrypted Non-C2 Protocol",
+      "tactic_id": "TA0010",
+      "tactic_ref": "x-mitre-tactic--9a4e74ab-5008-408c-84bf-a10dfbc53462",
+      "technique_id": "T1048.002",
+      "technique_ref": "attack-pattern--8e350c1d-ac79-4b5c-bd4e-7476d7e84ec5",
+      "description": "Exfiltrate extracted tickets, likely for offline password cracking",
+      "effect_refs": [
+        "attack-condition--ca14268c-fdba-4e14-9604-4e0ac5b596e4"
+      ]
+    },
+    {
+      "type": "note",
+      "id": "note--c21d22fb-d9a6-49fe-9cd7-12128a74cbab",
+      "spec_version": "2.1",
+      "created": "2025-07-25T15:18:34.336Z",
+      "modified": "2025-07-25T15:18:34.336Z",
+      "abstract": "Network communication",
+      "content": "During the TGS (Ticket Granting Service) request, the VM will communicate with the Domain Controller",
+      "object_refs": [
+        "attack-asset--a5b7b52d-1cbe-407d-9075-da2451a6d0dd"
+      ]
+    },
+    {
+      "type": "attack-asset",
+      "id": "attack-asset--a5b7b52d-1cbe-407d-9075-da2451a6d0dd",
+      "spec_version": "2.1",
+      "created": "2025-07-25T15:18:34.336Z",
+      "modified": "2025-07-25T15:18:34.336Z",
+      "extensions": {
+        "extension-definition--fb9c968a-745b-4ade-9b25-c324172197f4": {
+          "extension_type": "new-sdo"
+        }
+      },
+      "name": "Yomi Machinery (Domain Controller)"
+    },
+    {
+      "type": "tool",
+      "id": "tool--b3327fc4-e72a-4327-b68d-76b59d9ded44",
+      "spec_version": "2.1",
+      "created": "2025-07-25T15:18:34.336Z",
+      "modified": "2025-07-25T15:18:34.336Z",
+      "name": "Mimikatz",
+      "description": "https://github.com/gentilkiwi/mimikatz/releases"
+    },
+    {
+      "type": "attack-condition",
+      "id": "attack-condition--69a700e9-e6a1-40c9-9307-337687372588",
+      "spec_version": "2.1",
+      "created": "2025-07-25T15:18:34.336Z",
+      "modified": "2025-07-25T15:18:34.336Z",
+      "extensions": {
+        "extension-definition--fb9c968a-745b-4ade-9b25-c324172197f4": {
+          "extension_type": "new-sdo"
+        }
+      },
+      "description": "T1558.003",
+      "pattern": "[\n  process:name = 'powershell.exe' AND \n  process:command_line MATCHES '(?i).*Kerberos::list\\s+/export.*\\s+.*\\\\.kirbi.*'\n]",
+      "on_true_refs": [
+        "attack-action--d05ccfb7-0bcc-4827-8ded-16adf339c95a"
+      ]
+    },
+    {
+      "type": "attack-condition",
+      "id": "attack-condition--ca14268c-fdba-4e14-9604-4e0ac5b596e4",
+      "spec_version": "2.1",
+      "created": "2025-07-25T15:18:34.336Z",
+      "modified": "2025-07-25T15:18:34.336Z",
+      "extensions": {
+        "extension-definition--fb9c968a-745b-4ade-9b25-c324172197f4": {
+          "extension_type": "new-sdo"
+        }
+      },
+      "description": "T1048.002",
+      "pattern": "[\n  process:name = 'curl.exe' AND \n  process:command_line MATCHES '(?i).*-s.*-F.*\\\\.kirbi.*file\\\\.io.*'\n]",
+      "on_true_refs": [
+        "attack-action--6f85486b-77fc-4588-8ddf-23be0acf3063"
+      ]
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--6f85486b-77fc-4588-8ddf-23be0acf3063",
+      "spec_version": "2.1",
+      "created": "2025-07-25T15:18:34.336Z",
+      "modified": "2025-07-25T15:18:34.336Z",
+      "extensions": {
+        "extension-definition--fb9c968a-745b-4ade-9b25-c324172197f4": {
+          "extension_type": "new-sdo"
+        }
+      },
+      "name": "End"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--280d3cfd-53d9-42be-acf8-da2c353ff63d",
+      "spec_version": "2.1",
+      "created": "2025-07-25T15:18:34.336Z",
+      "modified": "2025-07-25T15:18:34.336Z",
+      "relationship_type": "related-to",
+      "source_ref": "attack-action--1a463f80-ddbd-41b9-a873-2e12f2747de3",
+      "target_ref": "note--c21d22fb-d9a6-49fe-9cd7-12128a74cbab"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--6e12202a-3c4a-444a-9241-179431b730a8",
+      "spec_version": "2.1",
+      "created": "2025-07-25T15:18:34.336Z",
+      "modified": "2025-07-25T15:18:34.336Z",
+      "relationship_type": "related-to",
+      "source_ref": "attack-action--1a463f80-ddbd-41b9-a873-2e12f2747de3",
+      "target_ref": "tool--b3327fc4-e72a-4327-b68d-76b59d9ded44"
+    }
+  ]
+}

