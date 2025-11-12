@@ -5,7 +5,10 @@
         <p class="application-name">{{ applicationName }}</p>
         <p class="application-version">Version {{ applicationVersion }}</p>
       </div>
-      <img class="organization" v-if="organization" :src="organization" />
+      <div class="organization-logos">
+        <img class="organization resilmesh-logo" v-if="resilmeshLogo" :src="resilmeshLogo" />
+        <img class="organization ctid-logo" v-if="organization" :src="organization" />
+      </div>
     </div>
     <div class="menu-body">
       <div class="section open-recovered-file" v-if="pages.size">
@@ -92,10 +95,17 @@ export default defineComponent({
     if (Configuration.splash.organization) {
       organization = Images(Configuration.splash.organization);
     }
+    let resilmeshLogo;
+    try {
+      resilmeshLogo = Images("./Resilmesh Logo Transparent.png");
+    } catch (e) {
+      console.warn("Resilmesh logo not found");
+    }
     return {
       applicationName: Configuration.application_name,
       applicationVersion: version,
       organization,
+      resilmeshLogo,
       newFile: Configuration.splash.new_file,
       newIoBFile: Configuration.splash.new_iob_file,
       openFile: Configuration.splash.open_file,
@@ -236,8 +246,21 @@ export default defineComponent({
   white-space: nowrap;
 }
 
+.organization-logos {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
 .organization {
   height: 27px;
+}
+
+.resilmesh-logo {
+  height: 60px;
+  width: 200px;
+  object-fit: cover;
+  object-position: center;
 }
 
 /** === Body === */

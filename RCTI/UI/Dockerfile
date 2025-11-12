@@ -1,26 +1,9 @@
 # STIX 2.1 Drag and Drop Modeler UI Dockerfile
-FROM node:16-alpine AS builder
-
-# Set working directory
-WORKDIR /app
-
-# Copy package files
-COPY app/package*.json ./
-
-# Install dependencies
-RUN npm ci --only=production
-
-# Copy source code
-COPY app/ .
-
-# Build the application
-RUN npm run build
-
-# Production stage with nginx
+# Simple approach: Use pre-built files
 FROM nginx:alpine
 
-# Copy built assets from builder stage
-COPY --from=builder /app/build /usr/share/nginx/html
+# Copy pre-built assets directly (build outside Docker first)
+COPY app/build /usr/share/nginx/html
 
 # Copy custom nginx configuration
 COPY nginx.conf /etc/nginx/nginx.conf

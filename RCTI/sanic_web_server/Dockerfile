@@ -1,12 +1,7 @@
 # Sanic Web Server Backend Dockerfile
-FROM python:3.9-slim
+FROM python:3.9
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    gcc \
-    g++ \
-    curl \
-    && rm -rf /var/lib/apt/lists/*
+# python:3.9 already has gcc/g++ and curl, skip apt install
 
 # Set working directory
 WORKDIR /app
@@ -16,12 +11,14 @@ COPY pyproject.toml ./
 
 # Install Python dependencies
 RUN pip install --upgrade pip && \
-    pip install -e . && \
-    pip install stix2-patterns
+    pip install -e .
 
 # Copy application source
 COPY src/ ./src/
 COPY tests/ ./tests/
+
+# Add src/server to PYTHONPATH so 'from correlate import' works
+ENV PYTHONPATH="/app/src/server:${PYTHONPATH}"
 
 # Create directories for data
 RUN mkdir -p ./docs/attackflow_graphs && \
@@ -32,6 +29,14 @@ RUN mkdir -p ./docs/attackflow_graphs && \
 RUN useradd --create-home --shell /bin/bash app && \
     chown -R app:app /app
 USER app
+
+# Set environment variables for paths
+ENV PROJECT_ROOT=/app \
+    BUILDER_PATH=/app/attack_flow_builder/dist \
+    STIX_VIZ_PATH=/app/cti-stix-visualization \
+    FLOW_DIR=/app/docs/attackflow_graphs \
+    STORAGE_PATH=/app/alerts \
+    STIX_STORAGE_PATH=/app/docs
 
 # Expose port
 EXPOSE 8000

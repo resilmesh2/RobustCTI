@@ -19,6 +19,9 @@ The system consists of three main components:
    - Port: 3000
    - Access: http://localhost:3000
 
+4. **CTI STIX Visualization** - OASIS CTI STIX visualization library (served by Sanic backend)
+   - Access: http://localhost:8000/cti-stix-visualization
+
 ## Prerequisites
 
 - Docker Engine 20.10+
@@ -44,7 +47,9 @@ The system consists of three main components:
 
 4. Access the applications:
    - Attack Flow Builder: http://localhost:8080
-   - Sanic Web Server: http://localhost:8000
+   - Sanic Web Server API: http://localhost:8000
+   - Attack Flow Builder (via backend): http://localhost:8000/builder
+   - CTI STIX Visualization: http://localhost:8000/cti-stix-visualization
    - STIX Modeler: http://localhost:3000
 
 ## Individual Service Management
@@ -87,13 +92,33 @@ npm run serve
 
 The Sanic Web Server provides these endpoints:
 
-- `GET /health` - Health check
-- `GET /api/flows` - List attack flows
-- `GET /api/flows/<name>` - Get specific flow
-- `POST /api/flows/upload` - Upload flow file
-- `POST /api/validate-pattern` - Validate STIX pattern
-- `POST /api/validate-flow` - Validate flow patterns
-- `POST /wazuh-alerts` - Process security alerts
+### Core Endpoints
+- `GET /` - Server home page
+- `GET /health` - Health check with flow status
+- `GET /routes` - List all available routes
+
+### Flow Management
+- `GET /flow` - Get current flow status and metadata
+- `POST /flow/reset` - Reset the global attack flow
+- `GET /api/flows` - List available attack flow files
+- `GET /api/flows/<flow_name>` - Get specific flow file contents
+- `POST /api/flows/upload` - Upload new flow file (.json or .afb)
+- `POST /api/flows/activate/<flow_name>` - Activate a new attack flow
+
+### STIX Pattern Validation
+- `POST /api/validate-pattern` - Validate single STIX pattern
+- `POST /api/validate-flow` - Validate all patterns in a flow
+
+### Alert Processing
+- `POST /wazuh-alerts` - Process security alerts and correlate with attack flow
+
+### Atomic Red Team Integration
+- `POST /api/upload-schedule` - Upload attack schedule file to Kali
+- `POST /api/run-atomic` - Execute Atomic Red Team tests via Kali
+
+### Static Content
+- `/builder` - Attack Flow Builder frontend (Vue.js)
+- `/cti-stix-visualization` - STIX visualization tool
 
 ## Data Persistence
 

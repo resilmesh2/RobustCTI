@@ -184,8 +184,7 @@ export default defineComponent({
      * Launch the STIX Visualizer in a new tab/window
      */
     launchStixVisualizer() {
-      const stixVisualizerUrl = "https://oasis-open.github.io/cti-stix-visualization/";
-      window.open(stixVisualizerUrl, "_blank", "noopener,noreferrer");
+      window.open('/cti-stix-visualization/index.html', '_blank');
     },
 
     /**

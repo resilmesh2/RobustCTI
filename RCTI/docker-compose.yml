@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # Attack Flow Builder Frontend
   attackflow_builder:
@@ -29,10 +27,16 @@ services:
       - "8000:8000"
     environment:
       - DEBUG=${DEBUG:-false}
+      - PROJECT_ROOT=/app
+      - BUILDER_PATH=/app/attack_flow_builder/dist
+      - STIX_VIZ_PATH=/app/cti-stix-visualization
+      - FLOW_DIR=/app/docs/attackflow_graphs
       - STORAGE_PATH=/app/alerts
       - STIX_STORAGE_PATH=/app/stix_bundles
     volumes:
-      - ./docs:/app/docs:ro
+      - ./sanic_web_server/docs:/app/docs
+      - ./attack_flow_builder/dist:/app/attack_flow_builder/dist:ro
+      - ./cti-stix-visualization:/app/cti-stix-visualization:ro
       - backend_alerts:/app/alerts
       - backend_stix:/app/stix_bundles
     networks:
@@ -44,6 +48,8 @@ services:
       retries: 3
       start_period: 40s
     restart: unless-stopped
+    depends_on:
+      - attackflow_builder
 
   # STIX Modeler UI
   stix_modeler:

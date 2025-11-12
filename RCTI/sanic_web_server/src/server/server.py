@@ -26,8 +26,17 @@ flow_file_path = ATTACKFLOW_FILE
 # Initialize Sanic app
 app = Sanic("RCTI_STIX_IoB_Server")
 
+# Get paths from environment or use defaults relative to project root
+import os
+PROJECT_ROOT = os.getenv("PROJECT_ROOT", "/home/mgmt/attackflow")
+BUILDER_PATH = os.getenv("BUILDER_PATH", os.path.join(PROJECT_ROOT, "attack_flow_builder/dist"))
+STIX_VIZ_PATH = os.getenv("STIX_VIZ_PATH", os.path.join(PROJECT_ROOT, "cti-stix-visualization"))
+
 # Serve the built Vue.js frontend
-app.static('/builder', '/home/mgmt/attackflow/attack_flow_builder/dist', name='frontend_builder', index='index.html')
+app.static('/builder', BUILDER_PATH, name='frontend_builder', index='index.html')
+
+# Serve the STIX visualizer
+app.static('/cti-stix-visualization', STIX_VIZ_PATH, name='stix_visualizer', index='index.html')
 
 
 global_flow_lock = threading.Lock()
@@ -450,9 +459,9 @@ async def receive_wazuh_alert(request):
 async def list_flows(request):
     """List available attack flow files"""
     try:
-        flow_dir = "/home/mgmt/attackflow/sanic_web_server/docs/attackflow_graphs"
+        flow_dir = os.getenv("FLOW_DIR", os.path.join(PROJECT_ROOT, "sanic_web_server/docs/attackflow_graphs"))
         flows = []
-        
+
         if os.path.exists(flow_dir):
             for file in os.listdir(flow_dir):
                 if file.endswith('.json') or file.endswith('.afb'):
@@ -464,7 +473,7 @@ async def list_flows(request):
                         "size": stat.st_size,
                         "modified": datetime.fromtimestamp(stat.st_mtime).isoformat()
                     })
-        
+
         return response.json({"flows": flows})
     except Exception as e:
         return response.json({"error": str(e)}, status=500)
@@ -473,14 +482,15 @@ async def list_flows(request):
 async def get_flow(request, flow_name):
     """Get a specific flow file"""
     try:
-        flow_path = f"/home/mgmt/attackflow/sanic_web_server/docs/attackflow_graphs/{flow_name}"
-        
+        flow_dir = os.getenv("FLOW_DIR", os.path.join(PROJECT_ROOT, "sanic_web_server/docs/attackflow_graphs"))
+        flow_path = os.path.join(flow_dir, flow_name)
+
         if not os.path.exists(flow_path):
             return response.json({"error": "Flow not found"}, status=404)
-        
+
         with open(flow_path, 'r') as f:
             flow_data = json_module.load(f)
-        
+
         return response.json(flow_data)
     except Exception as e:
         return response.json({"error": str(e)}, status=500)
@@ -501,7 +511,7 @@ async def upload_flow(request):
             return response.json({"error": "Invalid file type. Only .json and .afb files allowed"}, status=400)
         
         # Save file
-        flow_dir = "/home/mgmt/attackflow/docs/attackflow_graphs"
+        flow_dir = os.getenv("FLOW_DIR", os.path.join(PROJECT_ROOT, "sanic_web_server/docs/attackflow_graphs"))
         os.makedirs(flow_dir, exist_ok=True)
         
         file_path = os.path.join(flow_dir, uploaded_file.name)
@@ -513,9 +523,65 @@ async def upload_flow(request):
             "filename": uploaded_file.name,
             "path": file_path
         })
-        
+
     except Exception as e:
         return response.json({"error": str(e)}, status=500)
+
+@app.route("/api/flows/activate/<flow_name>", methods=["POST"])
+async def activate_flow(request, flow_name):
+    """Activate a new attack flow (only allowed if no active flow or current flow is completed)"""
+    try:
+        # Check if current flow is still active (not completed)
+        with global_flow_lock:
+            flow_active = request.app.ctx.flow_metadata.get("flow_created", False)
+            flow_completed = request.app.ctx.flow_metadata.get("flow_completed", False)
+
+        if flow_active and not flow_completed:
+            return response.json({
+                "status": "error",
+                "message": "Cannot activate new flow while current flow is in progress",
+                "current_step": request.app.ctx.flow_metadata.get("current_step", 0),
+                "flow_completed": flow_completed,
+                "flow_active": flow_active
+            }, status=409)  # 409 Conflict
+
+        # Load the new flow file
+        flow_dir = os.getenv("FLOW_DIR", os.path.join(PROJECT_ROOT, "sanic_web_server/docs/attackflow_graphs"))
+        flow_path = os.path.join(flow_dir, flow_name)
+
+        if not os.path.exists(flow_path):
+            return response.json({"status": "error", "message": f"Flow file not found: {flow_name}"}, status=404)
+
+        # Load and set as active flow
+        attack_flow = load_attack_flow(flow_path)
+        if not attack_flow:
+            return response.json({"status": "error", "message": "Failed to load attack flow"}, status=500)
+
+        with global_flow_lock:
+            request.app.ctx.attack_flow_template = attack_flow
+            # Reset flow state for new flow
+            request.app.ctx.global_flow_handler = None
+            request.app.ctx.global_attack_flow = None
+            request.app.ctx.flow_metadata = {
+                "flow_created": False,
+                "flow_completed": False,
+                "current_step": 0,
+                "total_alerts": 0,
+                "matched_alerts": []
+            }
+            request.app.ctx.stix_objects = []
+
+        logger.info(f"Activated new attack flow: {flow_name}")
+
+        return response.json({
+            "status": "success",
+            "message": f"Attack flow '{flow_name}' activated successfully",
+            "flow_name": attack_flow.name if hasattr(attack_flow, 'name') else flow_name
+        })
+
+    except Exception as e:
+        logger.error(f"Error activating flow: {str(e)}")
+        return response.json({"status": "error", "message": str(e)}, status=500)
 
 # STIX Pattern validation endpoint
 @app.route("/api/validate-pattern", methods=["POST"])

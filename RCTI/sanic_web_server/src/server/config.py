@@ -15,9 +15,9 @@ logger = logging.getLogger(__name__)
 # NEO4J_PASSWORD = os.getenv("NEO4J_PASSWORD", "neo4jpassword")
 
 # Configure the storage path
-STORAGE_PATH = Path(os.getenv("STORAGE_PATH", "/home/mgmt/attackflow/sanic_web_server/alerts"))
-STIX_STORAGE_PATH = Path(os.getenv("STIX_STORAGE_PATH", "/home/mgmt/attackflow/docs"))
-ATTACKFLOW_FILE = os.getenv("RULES_FILE", "/home/mgmt/attackflow/sanic_web_server/docs/attackflow_graphs/Resilmesh-RCTI-UberMicroEmulation.json")
+STORAGE_PATH = Path(os.getenv("STORAGE_PATH", "./alerts"))
+STIX_STORAGE_PATH = Path(os.getenv("STIX_STORAGE_PATH", "./docs"))
+ATTACKFLOW_FILE = os.getenv("ATTACKFLOW_FILE", "./docs/attackflow_graphs/Resilmesh-RCTI-UberMicroEmulation.json")
 
 # Debug flag for correlation engine
 DEBUG = os.getenv("DEBUG", "False").lower() in ("true", "1", "t")
