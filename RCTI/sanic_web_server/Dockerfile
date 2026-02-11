@@ -9,6 +9,11 @@ WORKDIR /app
 # Copy requirements first for better caching
 COPY pyproject.toml ./
 
+# Install OS dependencies
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends sshpass && \
+    rm -rf /var/lib/apt/lists/*
+
 # Install Python dependencies
 RUN pip install --upgrade pip && \
     pip install -e .
@@ -18,7 +23,7 @@ COPY src/ ./src/
 COPY tests/ ./tests/
 
 # Add src/server to PYTHONPATH so 'from correlate import' works
-ENV PYTHONPATH="/app/src/server:${PYTHONPATH}"
+ENV PYTHONPATH="/app/src/server"
 
 # Create directories for data
 RUN mkdir -p ./docs/attackflow_graphs && \

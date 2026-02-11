@@ -22,6 +22,7 @@ services:
     build:
       context: ./sanic_web_server
       dockerfile: Dockerfile
+      network: host
     container_name: sanic_web_server
     ports:
       - "8000:8000"

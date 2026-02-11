@@ -244,7 +244,9 @@ export default defineComponent({
       }
 
       // Check MIME type for additional security
-      if (file.type && !file.type.includes('csv') && !file.type.includes('text/')) {
+      // Accept: text/csv, text/plain, application/vnd.ms-excel, or empty (when browser can't determine)
+      const validMimeTypes = ['csv', 'text/', 'application/vnd.ms-excel', 'application/octet-stream'];
+      if (file.type && !validMimeTypes.some(mime => file.type.includes(mime))) {
         this.fileError = 'Invalid file type. Only CSV files are allowed.';
         return;
       }

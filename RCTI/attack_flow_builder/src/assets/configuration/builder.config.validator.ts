@@ -82,11 +82,11 @@ class AttackFlowValidator extends DiagramValidator {
      */
     protected override validate(diagram: DiagramObjectModel): void {
         this.graph = SemanticAnalyzer.toGraph(diagram);
-        // Validate nodes
-        let actionNodeCount = 0;
+
+        // First pass: Find the flow node and determine its type
         let flowId;
         let flowType = "standard"; // Default flow type
-        
+
         for (let [id, node] of this.graph.nodes) {
             if (node.template.id === "flow") {
                 flowId = id;
@@ -95,7 +95,14 @@ class AttackFlowValidator extends DiagramValidator {
                 if (flowTypeProperty?.isDefined()) {
                     flowType = flowTypeProperty.toString();
                 }
+                break; // Only one flow node should exist
             }
+        }
+
+        // Second pass: Validate nodes
+        let actionNodeCount = 0;
+
+        for (let [id, node] of this.graph.nodes) {
             if (node.template.id === "action") {
                 actionNodeCount++;
                 // Only apply action-condition constraint for IoB flows
@@ -544,8 +551,19 @@ class AttackFlowValidator extends DiagramValidator {
      *  The action node's id.
      */
     protected validateActionFollowedByCondition(id: string) {
+        const node = this.getNode(id);
+
+        // Exempt "End" actions from the condition requirement
+        const nameProp = node.props.value.get("name");
+        if (nameProp?.isDefined()) {
+            const actionName = nameProp.toString().trim();
+            if (actionName === "End" || actionName === "end") {
+                return; // End actions don't need to be followed by a condition
+            }
+        }
+
         let hasConditionOutput = false;
-        
+
         // Check all outbound nodes to see if any are conditions
         for (const [, outboundNode] of this.getOutboundNodes(id)) {
             if (outboundNode.template.id === "condition") {
@@ -553,7 +571,7 @@ class AttackFlowValidator extends DiagramValidator {
                 break;
             }
         }
-        
+
         if (!hasConditionOutput) {
             this.addError(id, "An action must be followed by a Condition.");
         }
